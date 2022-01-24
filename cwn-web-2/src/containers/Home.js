@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import "./Home.css";
 
@@ -9,15 +9,17 @@ import {
   NotificationOutlined,
   AudioOutlined,
 } from "@ant-design/icons";
-import Edges from "../data/cwn_base_edges.json";
-import Nodes from "../data/cwn_base_nodes.json";
+
+import useData from "../hooks/useData";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 function Home() {
-  const onSearch = (value) => console.log(value);
+  const onSearch = (value) => console.log(query(value));
+
+  const query = useData();
 
   return (
     <Layout>
@@ -27,7 +29,8 @@ function Home() {
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}></Menu>
       </Header>
       <Layout className="searchSession">
-        <Search className="search"
+        <Search
+          className="search"
           placeholder="請輸入查詢字詞"
           allowClear
           onSearch={onSearch}
@@ -69,16 +72,7 @@ function Home() {
           </Menu>
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              margin: 0,
-              height: "100%",
-            }}
-          >
-            Content
-          </Content>
+          <Content className="site-layout-background">Content</Content>
         </Layout>
       </Layout>
     </Layout>

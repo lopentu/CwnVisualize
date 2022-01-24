@@ -11,6 +11,9 @@
 
 .site-layout-background {
   background: #fff;
+  padding: 24;
+  margin: 0;
+  height: "100%";
 }
 
 .ant-layout {
