@@ -37,7 +37,12 @@ const useData = () => {
 
   const queryLemma = (nodeName) => {
     const connectedNodes = findConnectedNodes(nodeName, "sense"); // assert node_type === "sense"
-    return connectedNodes.map((n) => ({ ...n, name: n.def, children: [] }));
+    return connectedNodes.map((n) => ({
+      ...n,
+      // name: n.def,
+      name: undefined,
+      children: [],
+    }));
   };
 
   return queryGlyph;

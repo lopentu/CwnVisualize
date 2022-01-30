@@ -29,6 +29,9 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
+          minRadius: 5,
+          maxRadius: 40,
+          nodePadding: 10,
           xField: "x",
           yField: "y",
         })
