@@ -3,7 +3,16 @@ import Nodes from "../data/cwn_base_nodes.json";
 import Edges from "../data/cwn_base_edges.json";
 
 const useData = () => {
-  // const [glyphs, setGlyphs] = useState([]);
+  const findConnectedNodes = (nodeName) => {
+    return Object.keys(Edges).reduce((result, name) => {
+      const splitName = name.split("-");
+      if (splitName[0] === nodeName) {
+        // console.log("~~~", name, Nodes[splitName[1]]);
+        result = [...result, { name: splitName[1], ...Nodes[splitName[1]] }];
+      }
+      return result;
+    }, []);
+  };
 
   const queryGlyph = (glyph) => {
     console.log(glyph);
@@ -12,19 +21,23 @@ const useData = () => {
         Nodes[name]["node_type"] === "glyph" && Nodes[name]["glyph"] === glyph
       );
     });
-    const connectedNodesNames = Object.keys(Edges).reduce((result, name) => {
-      const splitName = name.split("-");
-      if (splitName.find((n) => n === nodeName)) {
-        result = [
-          ...result,
-          splitName[0] === nodeName ? splitName[1] : splitName[0],
-        ];
-      }
-      return result;
-    }, []);
+    const connectedNodes = findConnectedNodes(nodeName);
 
-    const connectedNodes = connectedNodesNames.map((name) => Nodes[name]);
-    return [nodeName, Nodes[nodeName], connectedNodesNames, connectedNodes];
+    return [
+      {
+        name: Nodes[nodeName].glyph,
+        children: connectedNodes.map((n) => ({
+          ...n,
+          name: n.zhuyin,
+          children: queryLemma(n.name),
+        })),
+      },
+    ];
+  };
+
+  const queryLemma = (nodeName) => {
+    const connectedNodes = findConnectedNodes(nodeName, "sense"); // assert node_type === "sense"
+    return connectedNodes.map((n) => ({ ...n, name: n.def, children: [] }));
   };
 
   return queryGlyph;
