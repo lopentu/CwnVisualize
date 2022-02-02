@@ -29,33 +29,40 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
-          minRadius: 5,
+          minRadius: 10,
           maxRadius: 40,
           nodePadding: 10,
           xField: "x",
           yField: "y",
         })
       );
+      series.nodes.template.adapters.add("tooltipText", (text, target) => {
+        if (target.dataItem) {
+          switch (target.dataItem.dataContext?.node_type) {
+            case "sense":
+              // const examplesText =
+              //   target.dataItem.dataContext.examples ?? [].join("\r\n");
+              let examples = target.dataItem.dataContext.examples;
+              let examplesText = "";
+              // target.dataItem.dataContext.examples ??
+              //   [].forEach((example) => {
+              //     console.log("~~~", example);
+              //     examplesText += "\n" + example;
+              //   });
+              for (let i = 0; i < examples.length; i++)
+                examplesText += `\n${i + 1}. ${examples[i]}`;
+
+              return (
+                "定義： {def}" + (examplesText ? `\n例句：${examplesText}` : "")
+              );
+            default:
+              return "";
+          }
+        }
+        return text;
+      });
       seriesRef.current = series;
-      console.log(container.children);
-
-      series.data.setAll([
-        {
-          name: "Root",
-          value: null,
-          momo: "ShuehBa",
-          children: [
-            {
-              name: "A0",
-              x: am5.percent(50),
-              y: am5.percent(50),
-            },
-          ],
-        },
-      ]);
-      console.log(series.data);
-
-      series.set("selectedDataItem", series.dataItems[0]);
+      console.log(series);
 
       const legend = container.children.push(
         am5.Legend.new(graphRef.current, {
@@ -65,8 +72,6 @@ const useForceDirectedGraph = () => {
         })
       );
       legendRef.current = legend;
-
-      legend.data.setAll(series.dataItems[0].get("children"));
     }
 
     return () => {
@@ -79,6 +84,7 @@ const useForceDirectedGraph = () => {
   const updateGraph = (data) => {
     if (graphRef.current && data.length > 0) {
       seriesRef.current?.data?.setAll(data);
+      // series.set("selectedDataItem", series.dataItems[0]);
       legendRef.current?.data?.setAll(
         seriesRef.current?.dataItems?.[0]?.get("children") ?? []
       );

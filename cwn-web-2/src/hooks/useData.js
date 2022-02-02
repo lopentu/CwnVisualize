@@ -7,7 +7,6 @@ const useData = () => {
     return Object.keys(Edges).reduce((result, name) => {
       const splitName = name.split("-");
       if (splitName[0] === nodeName) {
-        // console.log("~~~", name, Nodes[splitName[1]]);
         result = [...result, { name: splitName[1], ...Nodes[splitName[1]] }];
       }
       return result;
@@ -26,6 +25,7 @@ const useData = () => {
     return [
       {
         name: Nodes[nodeName].glyph,
+        value: 100,
         children: connectedNodes.map((n) => ({
           ...n,
           name: n.zhuyin,
@@ -41,6 +41,7 @@ const useData = () => {
       ...n,
       // name: n.def,
       name: undefined,
+      value: 5,
       children: [],
     }));
   };
