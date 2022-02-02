@@ -41,9 +41,12 @@ const useForceDirectedGraph = () => {
         if (target.dataItem) {
           switch (target.dataItem.dataContext?.node_type) {
             case "sense":
-              const examplesText = target.dataItem.dataContext.examples
-                ?.map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
-                ?.join("\r\n");
+              let examplesText = target.dataItem.dataContext.examples;
+              if (examplesText) {
+                examplesText = examplesText
+                  .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+                  .join("\r\n");
+              }
 
               return (
                 chunkString(`定義：${target.dataItem.dataContext.def}`, 16) +
