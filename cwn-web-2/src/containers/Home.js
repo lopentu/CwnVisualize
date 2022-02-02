@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Layout, Menu, Input } from "antd";
-import {
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-} from "@ant-design/icons";
+import { TagOutlined } from "@ant-design/icons";
 
 import "./Home.css";
 import useData from "../hooks/useData";
@@ -29,7 +25,7 @@ function Home() {
   };
 
   useEffect(() => {
-    console.log(data);
+    console.log("data:", data);
     updateGraph(data);
   }, [data]);
 
@@ -43,6 +39,7 @@ function Home() {
       <Layout className="searchSession">
         <Search
           className="search"
+          size="large"
           placeholder="請輸入查詢字詞"
           allowClear
           onSearch={onSearch}
@@ -52,35 +49,37 @@ function Home() {
         />
       </Layout>
       <Layout style={{ height: "100%" }}>
-        <Sider width={200} className="site-layout-background">
+        <Sider className="site-layout-background sider" width={"33%"}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            // defaultSelectedKeys={["1"]}
+            // defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
-            <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
-              <Menu.Item key="3">option3</Menu.Item>
-              <Menu.Item key="4">option4</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub3"
-              icon={<NotificationOutlined />}
-              title="subnav 3"
-            >
-              <Menu.Item key="9">option9</Menu.Item>
-              <Menu.Item key="10">option10</Menu.Item>
-              <Menu.Item key="11">option11</Menu.Item>
-              <Menu.Item key="12">option12</Menu.Item>
-            </SubMenu>
+            {data?.[0]?.children?.map((lemmaNode, i) => (
+              <SubMenu
+                key={`lemma${i}`}
+                icon={<TagOutlined />}
+                title={`${lemmaNode.lemma}（${lemmaNode.zhuyin}）`}
+              >
+                {lemmaNode.children?.map((senseNode, j) => (
+                  <Menu.ItemGroup key={`sense${i}-${j}`} title={senseNode.def}>
+                    {senseNode.examples ? (
+                      senseNode.examples.map((example, k) => (
+                        <Menu.Item
+                          className="wrapText"
+                          key={`example${i}-${j}-${k}`}
+                        >
+                          {`${k + 1}. ` + example}
+                        </Menu.Item>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </Menu.ItemGroup>
+                ))}
+              </SubMenu>
+            ))}
           </Menu>
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
