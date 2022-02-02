@@ -54,7 +54,7 @@ function Home() {
             mode="inline"
             // defaultSelectedKeys={["1"]}
             // defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
+            style={{ height: "100%", borderRight: 0, overflow: "auto" }}
           >
             {data?.[0]?.children?.map((lemmaNode, i) => (
               <SubMenu

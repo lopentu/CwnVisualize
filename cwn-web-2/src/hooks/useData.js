@@ -20,6 +20,7 @@ const useData = () => {
         Nodes[name]["node_type"] === "glyph" && Nodes[name]["glyph"] === glyph
       );
     });
+    if (!nodeName) return null;
     const connectedNodes = findConnectedNodes(nodeName);
 
     return [
@@ -29,6 +30,7 @@ const useData = () => {
         children: connectedNodes.map((n) => ({
           ...n,
           name: n.zhuyin,
+          value: 50,
           children: queryLemma(n.name),
         })),
       },

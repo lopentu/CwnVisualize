@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import { chunkString } from "../utils/utility";
 
 const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
@@ -40,20 +41,13 @@ const useForceDirectedGraph = () => {
         if (target.dataItem) {
           switch (target.dataItem.dataContext?.node_type) {
             case "sense":
-              // const examplesText =
-              //   target.dataItem.dataContext.examples ?? [].join("\r\n");
-              let examples = target.dataItem.dataContext.examples;
-              let examplesText = "";
-              // target.dataItem.dataContext.examples ??
-              //   [].forEach((example) => {
-              //     console.log("~~~", example);
-              //     examplesText += "\n" + example;
-              //   });
-              for (let i = 0; i < examples.length; i++)
-                examplesText += `\n${i + 1}. ${examples[i]}`;
+              const examplesText = target.dataItem.dataContext.examples
+                ?.map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+                ?.join("\r\n");
 
               return (
-                "定義： {def}" + (examplesText ? `\n例句：${examplesText}` : "")
+                chunkString(`定義：${target.dataItem.dataContext.def}`, 16) +
+                (examplesText ? `\n例句：\n${examplesText}` : "")
               );
             default:
               return "";
