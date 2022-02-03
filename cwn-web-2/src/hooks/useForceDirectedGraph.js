@@ -33,7 +33,6 @@ const useForceDirectedGraph = () => {
           minRadius: 20,
           maxRadius: 60,
           nodePadding: 10,
-          // manyBodyStrength: -30,
           xField: "x",
           yField: "y",
         })

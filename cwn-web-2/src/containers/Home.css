@@ -4,6 +4,25 @@
   margin: 8px 0px;
 }
 
+.beginningLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.beginningLayout .search {
+  height: 40px;
+  width: 40%;
+  min-width: 300px;
+  margin-top: 5vh;
+}
+
+.logo-home {
+  width: 60%;
+  max-height: 30vh;
+}
+
 .ant-row-rtl .logo {
   float: right;
   margin: 16px 0 16px 24px;
@@ -24,9 +43,12 @@
   height: 100%;
 }
 
+.searchSession .search {
+  width: 300px !important;
+}
+
 .search {
   height: 40px;
-  width: 300px;
 }
 
 .searchSession {
