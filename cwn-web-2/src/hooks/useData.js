@@ -27,11 +27,11 @@ const useData = () => {
     const connectedNodes = findConnectedNodes(nodeName);
     return [
       {
-        name: Nodes[nodeName].glyph,
+        name: `[fontSize: 20px]${Nodes[nodeName].glyph}`,
         value: 100,
         children: connectedNodes.map((n) => ({
           ...n,
-          name: n.zhuyin,
+          name: `[fontSize: 15px]${n.zhuyin}`,
           value: 50,
           children: queryLemma(n.name),
         })),
@@ -43,9 +43,8 @@ const useData = () => {
     const connectedNodes = findConnectedNodes(nodeName); // assert node_type === "sense"
     return connectedNodes.map((n) => ({
       ...n,
-      // name: n.def,
-      name: undefined,
-      value: 5,
+      name: n.pos,
+      value: 10,
       children: [], //queryRelation(n.name),
     }));
   };

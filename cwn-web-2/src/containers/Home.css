@@ -47,6 +47,18 @@
   height: auto !important;
 }
 
-.ant-spin.ant-spin-lg.ant-spin-spinning {
-  top: 40vh;
+.spinRoot {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000000a0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.ant-spin-lg .ant-spin-dot {
+  font-size: 40px !important;
 }

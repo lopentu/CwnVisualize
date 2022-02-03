@@ -13,19 +13,24 @@ const { Search } = Input;
 function Home() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [firstSearch, setFirstSearch] = useState(true);
   const [updateGraph] = useForceDirectedGraph();
   const query = useData();
 
-  const onSearch = (value) => {
+  const onSearch = (value, e) => {
+    e.target.blur();
     setLoading(true);
-    const result = query(value);
-    console.log(loading);
-    if (result) {
-      setData(result);
+    // The block in setTimeout will execute in another thread.
+    // Thus, it won't block rendering.
+    setTimeout(() => {
+      const result = query(value);
       setLoading(false);
-    } else {
-      alert("不存在");
-    }
+      if (result) {
+        setData(result);
+      } else {
+        alert("不存在");
+      }
+    }, 0);
   };
 
   useEffect(() => {
@@ -36,7 +41,11 @@ function Home() {
   return (
     <Layout>
       <Header className="header">
-        <img className="logo" src="cwn-logo-main.svg" alt="中文詞彙網路 CWN" />
+        <img
+          className="logo"
+          src="/CwnWeb2/cwn-logo-main.svg"
+          alt="中文詞彙網路 CWN"
+        />
         {/* <div className="logo" /> */}
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}></Menu>
       </Header>
@@ -88,11 +97,13 @@ function Home() {
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content className="site-layout-background">
-            <Spin size="large" spinning={loading} />
             <div id="graph" />
           </Content>
         </Layout>
       </Layout>
+      <div className="spinRoot" hidden={!loading}>
+        <Spin size="large" spinning={loading} />
+      </div>
     </Layout>
   );
 }

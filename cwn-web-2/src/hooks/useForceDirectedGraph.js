@@ -7,7 +7,7 @@ import { chunkString } from "../utils/utility";
 const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
   const seriesRef = useRef();
-  const legendRef = useRef();
+  // const legendRef = useRef();
 
   useEffect(() => {
     if (!graphRef.current) {
@@ -30,9 +30,10 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
-          minRadius: 10,
-          maxRadius: 40,
+          minRadius: 20,
+          maxRadius: 60,
           nodePadding: 10,
+          // manyBodyStrength: -30,
           xField: "x",
           yField: "y",
         })
@@ -66,14 +67,14 @@ const useForceDirectedGraph = () => {
       seriesRef.current = series;
       console.log(series);
 
-      const legend = container.children.push(
-        am5.Legend.new(graphRef.current, {
-          centerX: am5.percent(50),
-          x: am5.percent(50),
-          layout: graphRef.current.horizontalLayout,
-        })
-      );
-      legendRef.current = legend;
+      // const legend = container.children.push(
+      //   am5.Legend.new(graphRef.current, {
+      //     centerX: am5.percent(50),
+      //     x: am5.percent(50),
+      //     layout: graphRef.current.horizontalLayout,
+      //   })
+      // );
+      // legendRef.current = legend;
     }
 
     return () => {
@@ -87,9 +88,9 @@ const useForceDirectedGraph = () => {
     if (graphRef.current && data.length > 0) {
       seriesRef.current?.data?.setAll(data);
       // series.set("selectedDataItem", series.dataItems[0]);
-      legendRef.current?.data?.setAll(
-        seriesRef.current?.dataItems?.[0]?.get("children") ?? []
-      );
+      // legendRef.current?.data?.setAll(
+      //   seriesRef.current?.dataItems?.[0]?.get("children") ?? []
+      // );
     }
   };
 
