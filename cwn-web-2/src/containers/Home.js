@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Layout, Menu, Input, Spin } from "antd";
+import { Layout, Menu, Input, Spin, message } from "antd";
 import { TagOutlined } from "@ant-design/icons";
 
 import "./Home.css";
@@ -39,7 +39,12 @@ function Home() {
           }
           setData(result);
         } else {
-          alert("不存在");
+          message.error({
+            content: "無該字詞",
+            style: {
+              marginTop: firstSearch ? "75vh" : "15vh",
+            },
+          });
         }
       }, 100);
     }, 200);
