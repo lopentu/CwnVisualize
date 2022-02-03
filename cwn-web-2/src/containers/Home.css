@@ -46,3 +46,7 @@
   white-space: normal !important;
   height: auto !important;
 }
+
+.ant-spin.ant-spin-lg.ant-spin-spinning {
+  top: 40vh;
+}

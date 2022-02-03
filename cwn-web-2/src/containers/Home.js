@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Layout, Menu, Input } from "antd";
+import { Layout, Menu, Input, Spin } from "antd";
 import { TagOutlined } from "@ant-design/icons";
 
 import "./Home.css";
@@ -12,13 +12,17 @@ const { Search } = Input;
 
 function Home() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [updateGraph] = useForceDirectedGraph();
   const query = useData();
+
   const onSearch = (value) => {
+    setLoading(true);
     const result = query(value);
-    console.log(result);
+    console.log(loading);
     if (result) {
       setData(result);
+      setLoading(false);
     } else {
       alert("不存在");
     }
@@ -84,7 +88,8 @@ function Home() {
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content className="site-layout-background">
-            <div id="graph"></div>
+            <Spin size="large" spinning={loading} />
+            <div id="graph" />
           </Content>
         </Layout>
       </Layout>
