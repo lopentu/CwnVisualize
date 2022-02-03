@@ -65,7 +65,6 @@ function Home() {
           className="search"
           size="large"
           placeholder="請輸入查詢字詞"
-          allowClear
           value={queryContent}
           onChange={onQueryChange}
           onSearch={onSearch}
@@ -82,7 +81,6 @@ function Home() {
             className="search"
             size="large"
             placeholder="請輸入查詢字詞"
-            allowClear
             value={queryContent}
             onChange={onQueryChange}
             onSearch={onSearch}
@@ -142,6 +140,8 @@ function Home() {
           className="logo"
           src="/CwnWeb2/cwn-logo-main.svg"
           alt="中文詞彙網路 CWN"
+          onClick={() => setFirstSearch(true)}
+          style={{ cursor: "pointer" }}
         />
         {/* <div className="logo" /> */}
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}></Menu>
