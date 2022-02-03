@@ -58,6 +58,11 @@ const useForceDirectedGraph = () => {
         }
         return text;
       });
+
+      series.nodes.template.events.on("click", (e) => {
+        console.log("~~~" + e.target.dataItem.dataContext?.node_type);
+      });
+
       seriesRef.current = series;
       console.log(series);
 
