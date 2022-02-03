@@ -46,7 +46,7 @@ const useData = () => {
       // name: n.def,
       name: undefined,
       value: 5,
-      children: queryRelation(n.name),
+      children: [], //queryRelation(n.name),
     }));
   };
 
