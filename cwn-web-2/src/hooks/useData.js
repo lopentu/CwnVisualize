@@ -49,28 +49,28 @@ const useData = () => {
     }));
   };
 
-  const queryRelation = (nodeName) => {
-    console.log(Nodes[nodeName]);
-    const connectedRelationNodes = findConnectedNodes(nodeName);
-    return connectedRelationNodes.map((n) => {
-      const connectedSenseNodes = findConnectedNodes(n.name, false);
-      return connectedSenseNodes.reduce((result, nn) => {
-        const [lemmaNode] = findConnectedNodes(nn.name, false);
-        if (lemmaNode) {
-          return [
-            ...result,
-            {
-              ...lemmaNode,
-              name: Nodes[lemmaNode.name][Nodes[lemmaNode.name].node_type], // lemma || glyph ??
-              value: 100,
-              children: [],
-            },
-          ];
-        }
-        return result;
-      }, [])[0];
-    });
-  };
+  // const queryRelation = (nodeName) => {
+  //   console.log(Nodes[nodeName]);
+  //   const connectedRelationNodes = findConnectedNodes(nodeName);
+  //   return connectedRelationNodes.map((n) => {
+  //     const connectedSenseNodes = findConnectedNodes(n.name, false);
+  //     return connectedSenseNodes.reduce((result, nn) => {
+  //       const [lemmaNode] = findConnectedNodes(nn.name, false);
+  //       if (lemmaNode) {
+  //         return [
+  //           ...result,
+  //           {
+  //             ...lemmaNode,
+  //             name: Nodes[lemmaNode.name][Nodes[lemmaNode.name].node_type], // lemma || glyph ??
+  //             value: 100,
+  //             children: [],
+  //           },
+  //         ];
+  //       }
+  //       return result;
+  //     }, [])[0];
+  //   });
+  // };
 
   return queryGlyph;
 };

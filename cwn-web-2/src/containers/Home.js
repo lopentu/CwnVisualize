@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Menu, Input, Spin, message } from "antd";
 import { TagOutlined } from "@ant-design/icons";
 
@@ -53,7 +53,7 @@ function Home() {
   useEffect(() => {
     console.log("data:", data);
     updateGraph(data);
-  }, [data]);
+  }, [data, updateGraph]);
 
   const beginningLayout = () => {
     return (
