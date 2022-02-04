@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_run:
+    workflows: [Convert Original CWN Base Data]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cwn-web-2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+          cache-dependency-path: ./cwn-web-2/yarn.lock
+
+      - run: yarn install
+      - run: yarn build
