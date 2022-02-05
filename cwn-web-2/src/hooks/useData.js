@@ -1,76 +1,66 @@
-import Nodes from "../data/cwn_base_nodes.json";
-import Edges from "../data/cwn_base_edges.json";
+import wordMap from "../data/word_map.json";
+import relationLabels from "../data/relation_labels.json";
 
 const useData = () => {
-  const findConnectedNodes = (nodeName, second = true) => {
-    return Object.keys(Edges).reduce((result, name) => {
-      const splitName = name.split("-");
-      if (splitName[(second + 1) % 2] === nodeName) {
-        result = [
-          ...result,
-          { name: splitName[+second], ...Nodes[splitName[+second]] },
-        ];
-      }
-      return result;
+  const groupBy = (nodes, prop) => {
+    return nodes.reduce((groups, node) => {
+      console.log(node[prop]);
+      groups[node[prop]] = groups[node[prop]] || [];
+      groups[node[prop]].push(node);
+      return groups;
+    }, {});
+  };
+
+  const getRelationNodes = (relationsObj) => {
+    return Object.keys(relationsObj).reduce((children, type) => {
+      children = [
+        ...children,
+        ...relationsObj[type].map((node) => ({
+          name: `[fontSize: 20px]${node[0]}`,
+          value: 15,
+          children: [],
+          cwn_id: node[1],
+          relation_type: `${relationLabels[type]} ${type}`,
+        })),
+      ];
+      return children;
     }, []);
   };
 
-  const queryGlyph = (glyph) => {
-    console.log(glyph);
-    const [nodeName] = Object.keys(Nodes).filter((name) => {
-      return (
-        Nodes[name]["node_type"] === "glyph" && Nodes[name]["glyph"] === glyph
-      );
+  const queryGlyph = async (glyph) => {
+    const idx = wordMap[glyph];
+    if (!idx) return null;
+    const response = await fetch(`./data/cwn_data/cwn_web_data_${idx}.json`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
-    if (!nodeName) return null;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const nodes = await response.json();
+    console.log(nodes[glyph]);
+    const groupedNodes = groupBy(nodes[glyph], "zhuyin");
 
-    const connectedNodes = findConnectedNodes(nodeName);
     return [
       {
-        name: `[fontSize: 20px]${Nodes[nodeName].glyph}`,
+        name: `[fontSize: 30px]${glyph}`,
         value: 100,
-        children: connectedNodes.map((n) => ({
-          ...n,
-          name: `[fontSize: 15px]${n.zhuyin}`,
+        children: Object.keys(groupedNodes).map((zhuyin) => ({
+          name: zhuyin,
           value: 50,
-          children: queryLemma(n.name),
+          children: groupedNodes[zhuyin].map((n) => ({
+            ...n,
+            name: n.pos,
+            value: 10,
+            children: getRelationNodes(n.relations),
+          })),
+          lemma: glyph,
         })),
       },
     ];
   };
-
-  const queryLemma = (nodeName) => {
-    const connectedNodes = findConnectedNodes(nodeName); // assert node_type === "sense"
-    return connectedNodes.map((n) => ({
-      ...n,
-      name: n.pos,
-      value: 10,
-      children: [], //queryRelation(n.name),
-    }));
-  };
-
-  // const queryRelation = (nodeName) => {
-  //   console.log(Nodes[nodeName]);
-  //   const connectedRelationNodes = findConnectedNodes(nodeName);
-  //   return connectedRelationNodes.map((n) => {
-  //     const connectedSenseNodes = findConnectedNodes(n.name, false);
-  //     return connectedSenseNodes.reduce((result, nn) => {
-  //       const [lemmaNode] = findConnectedNodes(nn.name, false);
-  //       if (lemmaNode) {
-  //         return [
-  //           ...result,
-  //           {
-  //             ...lemmaNode,
-  //             name: Nodes[lemmaNode.name][Nodes[lemmaNode.name].node_type], // lemma || glyph ??
-  //             value: 100,
-  //             children: [],
-  //           },
-  //         ];
-  //       }
-  //       return result;
-  //     }, [])[0];
-  //   });
-  // };
 
   return queryGlyph;
 };

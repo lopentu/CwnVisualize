@@ -22,15 +22,15 @@ function Home() {
     setQueryContent(e.target.value);
   };
 
-  const onSearch = (value) => {
+  const onSearch = async (value) => {
     if (!queryContent) {
       return;
     }
     setLoading(true);
     // The block in setTimeout will execute in another thread.
     // Thus, it won't block rendering.
-    setTimeout(() => {
-      const result = query(value);
+    setTimeout(async () => {
+      const result = await query(value);
       setLoading(false);
       setTimeout(() => {
         if (result) {
@@ -47,13 +47,14 @@ function Home() {
           });
         }
       }, 100);
-    }, 200);
+    }, 400);
   };
 
   useEffect(() => {
     console.log("data:", data);
     updateGraph(data);
-  }, [data, updateGraph]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const beginningLayout = () => {
     return (
@@ -103,12 +104,12 @@ function Home() {
                 <SubMenu
                   key={`lemma${i}`}
                   icon={<TagOutlined />}
-                  title={`${lemmaNode.lemma}（${lemmaNode.zhuyin}）`}
+                  title={`${lemmaNode.lemma}（${lemmaNode.name}）`}
                 >
                   {lemmaNode.children?.map((senseNode, j) => (
                     <Menu.ItemGroup
                       key={`sense${i}-${j}`}
-                      title={senseNode.def}
+                      title={senseNode.definition}
                     >
                       {senseNode.examples ? (
                         senseNode.examples.map((example, k) => (
