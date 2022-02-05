@@ -1,5 +1,6 @@
 import wordMap from "../data/word_map.json";
 import relationLabels from "../data/relation_labels.json";
+// import * as am5 from "@amcharts/amcharts5";
 
 const useData = () => {
   const groupBy = (nodes, prop) => {
@@ -58,6 +59,8 @@ const useData = () => {
           })),
           lemma: glyph,
         })),
+        // x: am5.percent(50),
+        // y: am5.percent(50),
       },
     ];
   };
