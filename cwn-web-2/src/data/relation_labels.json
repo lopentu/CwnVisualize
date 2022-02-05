@@ -1,0 +1,12 @@
+{
+  "holonym": "整體詞",
+  "antonym": "反義詞",
+  "meronym": "部分詞",
+  "hypernym": "上位詞",
+  "hyponym": "下位詞",
+  "variant": "異體詞",
+  "nearsynonym": "近義詞",
+  "paranym": "類義詞",
+  "synonym": "同義詞",
+  "varword": "異體詞"
+}

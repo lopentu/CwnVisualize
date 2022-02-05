@@ -35,32 +35,38 @@ const useForceDirectedGraph = () => {
           nodePadding: 10,
           xField: "x",
           yField: "y",
+          // centerStrength: 1,
+          // initialFrames: 500,
+          showOnFrame: 100,
+          velocityDecay: 0.85,
         })
       );
-      series.nodes.template.adapters.add("tooltipText", (text, target) => {
+      series.nodes.template.adapters.add("tooltipText", (text = "", target) => {
         if (target.dataItem) {
-          switch (target.dataItem.dataContext?.node_type) {
-            case "sense":
-              let examplesText = target.dataItem.dataContext.examples;
-              if (examplesText) {
-                examplesText = examplesText
-                  .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
-                  .join("\r\n");
-              }
-
-              return (
-                chunkString(`定義：${target.dataItem.dataContext.def}`, 16) +
-                (examplesText ? `\n例句：\n${examplesText}` : "")
-              );
-            default:
-              return "";
+          if (target.dataItem.dataContext?.definition) {
+            let examplesText = target.dataItem.dataContext.examples;
+            if (examplesText) {
+              examplesText = examplesText
+                .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+                .join("\r\n");
+            }
+            return (
+              chunkString(
+                `定義：${target.dataItem.dataContext.definition}`,
+                16
+              ) + (examplesText ? `\n例句：\n${examplesText}` : "")
+            );
+          } else if (target.dataItem.dataContext.relation_type) {
+            return target.dataItem.dataContext.relation_type;
+          } else {
+            return "";
           }
         }
         return text;
       });
 
       series.nodes.template.events.on("click", (e) => {
-        console.log("~~~" + e.target.dataItem.dataContext?.node_type);
+        console.log("~~~", e.target.dataItem.dataContext);
       });
 
       seriesRef.current = series;
