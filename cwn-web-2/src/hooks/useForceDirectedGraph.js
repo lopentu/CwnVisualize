@@ -3,10 +3,12 @@ import * as am5 from "@amcharts/amcharts5";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import { chunkString } from "../utils/utility";
+import { useNavigate } from "react-router-dom";
 
 const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
   const seriesRef = useRef();
+  const navigate = useNavigate();
   // const legendRef = useRef();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
+
           minRadius: 15,
           maxRadius: 60,
           nodePadding: 10,
@@ -43,6 +46,17 @@ const useForceDirectedGraph = () => {
           singleBranchOnly: true,
         })
       );
+
+      series.nodes.template.adapters.add(
+        "cursorOverStyle",
+        (cursorOverStyle, target) => {
+          if (target?.dataItem?.dataContext?.ref) {
+            return "pointer";
+          }
+          return cursorOverStyle;
+        }
+      );
+
       series.nodes.template.adapters.add("tooltipText", (text = "", target) => {
         if (target.dataItem) {
           if (target.dataItem.dataContext?.definition) {
@@ -70,7 +84,11 @@ const useForceDirectedGraph = () => {
       });
 
       series.nodes.template.events.on("click", (e) => {
-        console.log("~~~", e.target.dataItem.dataContext);
+        // console.log("~~~", e.target.dataItem.dataContext);
+        const linkedGlyph = e.target.dataItem.dataContext.ref;
+        if (linkedGlyph) {
+          navigate(`/${linkedGlyph}`);
+        }
       });
 
       seriesRef.current = series;

@@ -1,7 +1,7 @@
 import wordMap from "../data/word_map.json";
 import relationLabels from "../data/relation_labels.json";
 import POS_LABELS from "../data/cwn-pos-label.json";
-// import * as am5 from "@amcharts/amcharts5";
+import * as am5 from "@amcharts/amcharts5";
 
 const posLabels = {};
 POS_LABELS.forEach((pos_label) => (posLabels[pos_label.pos] = pos_label.label));
@@ -24,6 +24,7 @@ const useData = () => {
         value: 80,
         children: [],
         cwn_id: node[1],
+        ref: node[0],
       })),
       relation: type,
     }));
@@ -64,7 +65,7 @@ const useData = () => {
         name: `[fontSize: 30px]${glyph}`,
         value: 100,
         children: Object.keys(groupedNodes).map((zhuyin) => ({
-          name: zhuyin,
+          name: zhuyin.split("　").join("\n"),
           value: 50,
           children: getPosNodes(groupBy(groupedNodes[zhuyin], "pos")),
           lemma: glyph,

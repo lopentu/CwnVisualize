@@ -5,22 +5,48 @@ import { TagOutlined } from "@ant-design/icons";
 import "./Home.css";
 import useData from "../hooks/useData";
 import useForceDirectedGraph from "../hooks/useForceDirectedGraph";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
-function Home() {
+function Home({ pathname }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [firstSearch, setFirstSearch] = useState(true);
   const [queryContent, setQueryContent] = useState("");
   const [updateGraph] = useForceDirectedGraph();
   const query = useData();
+  const { glyph } = useParams();
+  const navigate = useNavigate();
 
   const onQueryChange = (e) => {
     setQueryContent(e.target.value);
   };
+
+  useEffect(() => {
+    if (!glyph) {
+      setQueryContent("");
+      return;
+    }
+    if (glyph !== queryContent) {
+      setLoading(true);
+      // The block in setTimeout will execute in another thread.
+      // Thus, it won't block rendering.
+      setTimeout(async () => {
+        setQueryContent(glyph);
+        const result = await query(glyph);
+        setLoading(false);
+        setTimeout(() => {
+          if (result) {
+            setData(result);
+          } else {
+            navigate("/");
+          }
+        }, 100);
+      }, 400);
+    }
+  }, [glyph]);
 
   const onSearch = async (value) => {
     if (!queryContent) {
@@ -34,15 +60,13 @@ function Home() {
       setLoading(false);
       setTimeout(() => {
         if (result) {
-          if (firstSearch) {
-            setFirstSearch(false);
-          }
           setData(result);
+          navigate("/" + queryContent);
         } else {
           message.error({
             content: "無該字詞",
             style: {
-              marginTop: firstSearch ? "75vh" : "15vh",
+              marginTop: !glyph ? "75vh" : "15vh",
             },
           });
         }
@@ -60,7 +84,7 @@ function Home() {
     return (
       <Layout
         className="beginningLayout"
-        style={{ display: firstSearch ? undefined : "none" }}
+        style={{ display: !glyph ? undefined : "none" }}
       >
         <img
           className="logo-home"
@@ -81,7 +105,7 @@ function Home() {
 
   const searchResultLayout = () => {
     return (
-      <Layout style={{ display: !firstSearch ? undefined : "none" }}>
+      <Layout style={{ display: glyph ? undefined : "none" }}>
         <Layout className="searchSession">
           <Search
             className="search"
@@ -142,13 +166,14 @@ function Home() {
   return (
     <Layout>
       <Header className="header">
-        <img
-          className="logo"
-          src="/CwnWeb2/cwn-logo-main.svg"
-          alt="中文詞彙網路 CWN"
-          onClick={() => setFirstSearch(true)}
-          style={{ cursor: "pointer" }}
-        />
+        <Link to="/">
+          <img
+            className="logo"
+            src="/CwnWeb2/cwn-logo-main.svg"
+            alt="中文詞彙網路 CWN"
+            style={{ cursor: "pointer" }}
+          />
+        </Link>
         {/* <div className="logo" /> */}
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}></Menu>
       </Header>
