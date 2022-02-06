@@ -39,6 +39,7 @@ jobs:
 #           build_dir: build
 #         env:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: ls .
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
