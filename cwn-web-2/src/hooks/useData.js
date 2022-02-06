@@ -12,20 +12,17 @@ const useData = () => {
     }, {});
   };
 
-  const getRelationNodes = (relationsObj) => {
-    return Object.keys(relationsObj).reduce((children, type) => {
-      children = [
-        ...children,
-        ...relationsObj[type].map((node) => ({
-          name: `[fontSize: 20px]${node[0]}`,
-          value: 15,
-          children: [],
-          cwn_id: node[1],
-          relation_type: `${relationLabels[type]} ${type}`,
-        })),
-      ];
-      return children;
-    }, []);
+  const getRelationNodes = (relations) => {
+    return Object.keys(relations).map((type) => ({
+      name: relationLabels[type],
+      value: 20,
+      children: relations[type].map((node) => ({
+        name: `[fontSize: 30px]${node[0]}`,
+        value: 80,
+        children: [],
+        cwn_id: node[1],
+      })),
+    }));
   };
 
   const queryGlyph = async (glyph) => {
