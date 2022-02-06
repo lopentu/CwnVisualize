@@ -9,7 +9,6 @@ POS_LABELS.forEach((pos_label) => (posLabels[pos_label.pos] = pos_label.label));
 const useData = () => {
   const groupBy = (nodes, prop) => {
     return nodes.reduce((groups, node) => {
-      console.log(node[prop]);
       groups[node[prop]] = groups[node[prop]] || [];
       groups[node[prop]].push(node);
       return groups;

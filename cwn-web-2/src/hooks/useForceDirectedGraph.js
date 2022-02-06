@@ -74,7 +74,6 @@ const useForceDirectedGraph = () => {
       });
 
       seriesRef.current = series;
-      console.log(series);
 
       // const legend = container.children.push(
       //   am5.Legend.new(graphRef.current, {
