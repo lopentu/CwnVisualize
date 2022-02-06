@@ -1,0 +1,25 @@
+{
+  "short_name": "CWN",
+  "name": "中文詞彙網路 CWN",
+  "icons": [
+    {
+      "src": "cwn-logo-256.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "cwn-logo-256.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "cwn-logo-256.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
