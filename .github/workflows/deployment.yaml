@@ -9,6 +9,9 @@ on:
       - completed
   workflow_dispatch:
 
+env:
+  CI: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
