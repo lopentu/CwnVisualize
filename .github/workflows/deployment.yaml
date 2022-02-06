@@ -25,7 +25,9 @@ jobs:
           node-version: 16.x
           cache: yarn
           cache-dependency-path: ./cwn-web-2/yarn.lock
-
+      
+      - run: git config --global user.email "sam880222@gmail.com"
+      - run: git config --global user.name "sam880222"
       - run: yarn install
       - run: yarn deploy
 #       - name: Deploy to gh-pages
