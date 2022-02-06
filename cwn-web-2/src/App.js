@@ -1,11 +1,17 @@
-import './App.css';
+import "./App.css";
 import Home from "./containers/Home";
-import 'antd/dist/antd.css';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import "antd/dist/antd.css";
 
 function App() {
   return (
     <div className="App">
-      <Home/>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path=":glyph" element={<Home />} />
+        </Routes>
+      </HashRouter>
     </div>
   );
 }
