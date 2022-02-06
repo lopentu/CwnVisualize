@@ -25,7 +25,7 @@ const useForceDirectedGraph = () => {
       const series = container.children.push(
         am5hierarchy.ForceDirected.new(graphRef.current, {
           downDepth: 1,
-          initialDepth: 2,
+          initialDepth: 1,
           topDepth: 0,
           valueField: "value",
           categoryField: "name",
@@ -40,6 +40,7 @@ const useForceDirectedGraph = () => {
           // initialFrames: 500,
           showOnFrame: 100,
           velocityDecay: 0.85,
+          singleBranchOnly: true,
         })
       );
       series.nodes.template.adapters.add("tooltipText", (text = "", target) => {
