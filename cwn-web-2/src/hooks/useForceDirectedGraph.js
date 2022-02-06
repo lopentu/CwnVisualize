@@ -30,7 +30,7 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
-          minRadius: 20,
+          minRadius: 15,
           maxRadius: 60,
           nodePadding: 10,
           xField: "x",
@@ -58,8 +58,10 @@ const useForceDirectedGraph = () => {
                 16
               ) + (examplesText ? `\n例句：\n${examplesText}` : "")
             );
-          } else if (target.dataItem.dataContext.relation_type) {
-            return target.dataItem.dataContext.relation_type;
+          } else if (target.dataItem.dataContext.label) {
+            return target.dataItem.dataContext.label;
+          } else if (target.dataItem.dataContext.relation) {
+            return target.dataItem.dataContext.relation;
           } else {
             return "";
           }

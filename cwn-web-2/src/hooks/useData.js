@@ -1,6 +1,10 @@
 import wordMap from "../data/word_map.json";
 import relationLabels from "../data/relation_labels.json";
+import POS_LABELS from "../data/cwn-pos-label.json";
 // import * as am5 from "@amcharts/amcharts5";
+
+const posLabels = {};
+POS_LABELS.forEach((pos_label) => (posLabels[pos_label.pos] = pos_label.label));
 
 const useData = () => {
   const groupBy = (nodes, prop) => {
@@ -15,13 +19,28 @@ const useData = () => {
   const getRelationNodes = (relations) => {
     return Object.keys(relations).map((type) => ({
       name: relationLabels[type],
-      value: 20,
+      value: 30,
       children: relations[type].map((node) => ({
         name: `[fontSize: 30px]${node[0]}`,
         value: 80,
         children: [],
         cwn_id: node[1],
       })),
+      relation: type,
+    }));
+  };
+
+  const getPosNodes = (pos) => {
+    return Object.keys(pos).map((type) => ({
+      name: type,
+      value: 20,
+      children: pos[type].map((node) => ({
+        ...node,
+        name: "",
+        value: 0,
+        children: getRelationNodes(node.relations),
+      })),
+      label: posLabels[type],
     }));
   };
 
@@ -48,12 +67,7 @@ const useData = () => {
         children: Object.keys(groupedNodes).map((zhuyin) => ({
           name: zhuyin,
           value: 50,
-          children: groupedNodes[zhuyin].map((n) => ({
-            ...n,
-            name: n.pos,
-            value: 10,
-            children: getRelationNodes(n.relations),
-          })),
+          children: getPosNodes(groupBy(groupedNodes[zhuyin], "pos")),
           lemma: glyph,
         })),
         // x: am5.percent(50),
