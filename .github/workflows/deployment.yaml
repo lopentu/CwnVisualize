@@ -27,11 +27,11 @@ jobs:
           cache-dependency-path: ./cwn-web-2/yarn.lock
 
       - run: yarn install
-      - run: yarn build
-      - name: Deploy to gh-pages
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn deploy
+#       - name: Deploy to gh-pages
+#         uses: crazy-max/ghaction-github-pages@v2
+#         with:
+#           target_branch: gh-pages
+#           build_dir: build
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
