@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Input, Spin, message } from "antd";
+import {
+  Layout,
+  Menu,
+  Input,
+  Spin,
+  message,
+  Divider,
+  Tag,
+  Tooltip,
+} from "antd";
 import { TagOutlined } from "@ant-design/icons";
 
 import "./Home.css";
@@ -124,32 +133,51 @@ function Home({ pathname }) {
               // defaultOpenKeys={["sub1"]}
               style={{ height: "100%", borderRight: 0, overflow: "auto" }}
             >
-              {data?.[0]?.children?.map((lemmaNode, i) => (
-                <SubMenu
-                  key={`lemma${i}`}
-                  icon={<TagOutlined />}
-                  title={`${lemmaNode.lemma}（${lemmaNode.name}）`}
-                >
-                  {lemmaNode.children?.map((senseNode, j) => (
-                    <Menu.ItemGroup
-                      key={`sense${i}-${j}`}
-                      title={senseNode.definition}
-                    >
-                      {senseNode.examples ? (
-                        senseNode.examples.map((example, k) => (
-                          <Menu.Item
-                            className="wrapText"
-                            key={`example${i}-${j}-${k}`}
-                          >
-                            {`${k + 1}. ` + example}
-                          </Menu.Item>
-                        ))
-                      ) : (
-                        <></>
-                      )}
-                    </Menu.ItemGroup>
-                  ))}
-                </SubMenu>
+              {data?.[0]?.children?.map((zhuyinNode, i) => (
+                <>
+                  <SubMenu
+                    key={`zhuyin${i}`}
+                    icon={<TagOutlined />}
+                    title={
+                      <div className="zhuyin-title">
+                        {zhuyinNode.lemma} （{zhuyinNode.name}）
+                      </div>
+                    }
+                  >
+                    {zhuyinNode.children?.map((posNode, j) =>
+                      posNode.children?.map((senseNode, k) => (
+                        <Menu.ItemGroup
+                          key={`sense${i}-${j}-${k}`}
+                          title={
+                            <div className="sense-title">
+                              {senseNode.definition}
+                              <Tooltip title={posNode.label}>
+                                <Tag color="magenta" style={{ float: "right" }}>
+                                  {posNode.name}
+                                </Tag>
+                              </Tooltip>
+                            </div>
+                          }
+                        >
+                          {senseNode.examples ? (
+                            senseNode.examples.map((example, l) => (
+                              <Menu.Item
+                                className="wrapText"
+                                key={`example${i}-${j}-${k}-${l}`}
+                                style={{ pointerEvents: "none" }}
+                              >
+                                {`${l + 1}. ` + example}
+                              </Menu.Item>
+                            ))
+                          ) : (
+                            <></>
+                          )}
+                        </Menu.ItemGroup>
+                      ))
+                    )}
+                  </SubMenu>
+                  <Divider style={{ margin: 0 }} />
+                </>
               ))}
             </Menu>
           </Sider>

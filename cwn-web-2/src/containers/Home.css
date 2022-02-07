@@ -84,3 +84,13 @@
 .ant-spin-lg .ant-spin-dot {
   font-size: 40px !important;
 }
+
+.zhuyin-title {
+  font-size: medium;
+  font-weight: 500;
+}
+
+.sense-title {
+  font-weight: 500;
+  color: slateblue;
+}
