@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Layout,
   Menu,
@@ -8,6 +8,7 @@ import {
   Divider,
   Tag,
   Tooltip,
+  List,
 } from "antd";
 import { TagOutlined, TagsOutlined } from "@ant-design/icons";
 
@@ -142,74 +143,81 @@ function Home({ pathname }) {
           <Sider className="site-layout-background sider" width={"33%"}>
             <Menu
               mode="inline"
+              selectable={false}
               // defaultSelectedKeys={["1"]}
               // defaultOpenKeys={["sub1"]}
-              style={{ height: "100%", borderRight: 0, overflow: "auto" }}
+              className="result-menu"
             >
               {data?.[0]?.children?.map((zhuyinNode, i) => (
-                <>
-                  <SubMenu
-                    key={`zhuyin${i}`}
-                    icon={<TagOutlined />}
-                    title={
-                      <div className="zhuyin-title">
-                        {zhuyinNode.lemma} （{zhuyinNode.name}）
-                      </div>
-                    }
-                  >
-                    {zhuyinNode.children?.map((posNode, j) =>
-                      posNode.children?.map((senseNode, k) => (
+                <SubMenu
+                  key={`zhuyin${i}`}
+                  icon={<TagOutlined />}
+                  title={
+                    <div className="zhuyin-title">
+                      {zhuyinNode.lemma} （{zhuyinNode.name}）
+                    </div>
+                  }
+                >
+                  {zhuyinNode.children?.map((posNode, j) =>
+                    posNode.children?.map((senseNode, k) => (
+                      <Fragment key={`sense${i}-${j}-${k}`}>
                         <Menu.ItemGroup
-                          key={`sense${i}-${j}-${k}`}
                           title={
                             <div className="sense-title">
-                              {senseNode.definition}
+                              <span>{senseNode.definition}</span>
+                              <Tag
+                                // icon={<TagsOutlined />}
+                                color="magenta"
+                                className="tag"
+                              >
+                                {`${posNode.name} ${posNode.label}`}
+                              </Tag>
+                            </div>
+                          }
+                        >
+                          {senseNode.examples?.map((example, l) => (
+                            <Menu.Item
+                              className="list-item"
+                              key={`example${i}-${j}-${k}-${l}`}
+                            >
+                              {`${l + 1}. ` + example}
+                            </Menu.Item>
+                          ))}
+                          {senseNode.children.length > 0 && (
+                            <Menu.Item
+                              className="list-item related-words"
+                              key={`relatedWords${i}-${j}-${k}-`}
+                            >
+                              相關詞：
                               {senseNode.children.map((typeNode) =>
-                                typeNode.children.map((glyphNode) => (
+                                typeNode.children.map((glyphNode, index) => (
                                   <Tooltip
                                     title={typeNode.name}
                                     color={tagColors[typeNode.name]}
+                                    key={`${glyphNode.name}-${index}`}
                                   >
                                     <Tag
                                       color={tagColors[typeNode.name]}
                                       className="tag"
+                                      onClick={() => {
+                                        navigate(`/${glyphNode.ref}`);
+                                      }}
                                     >
                                       {glyphNode.ref}
                                     </Tag>
                                   </Tooltip>
                                 ))
                               )}
-                              <Tooltip title={posNode.label} color="magenta">
-                                <Tag
-                                  icon={<TagsOutlined />}
-                                  color="magenta"
-                                  className="tag"
-                                >
-                                  {posNode.name}
-                                </Tag>
-                              </Tooltip>
-                            </div>
-                          }
-                        >
-                          {senseNode.examples ? (
-                            senseNode.examples.map((example, l) => (
-                              <Menu.Item
-                                className="wrapText"
-                                key={`example${i}-${j}-${k}-${l}`}
-                                style={{ pointerEvents: "none" }}
-                              >
-                                {`${l + 1}. ` + example}
-                              </Menu.Item>
-                            ))
-                          ) : (
-                            <></>
+                            </Menu.Item>
                           )}
                         </Menu.ItemGroup>
-                      ))
-                    )}
-                  </SubMenu>
-                  <Divider style={{ margin: 0 }} />
-                </>
+                        <Menu.Divider
+                          style={{ marginBottom: 0, marginTop: 10 }}
+                        />
+                      </Fragment>
+                    ))
+                  )}
+                </SubMenu>
               ))}
             </Menu>
           </Sider>
