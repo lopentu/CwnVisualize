@@ -9,12 +9,25 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import { TagOutlined } from "@ant-design/icons";
+import { TagOutlined, TagsOutlined } from "@ant-design/icons";
 
 import "./Home.css";
 import useData from "../hooks/useData";
 import useForceDirectedGraph from "../hooks/useForceDirectedGraph";
 import { Link, useNavigate, useParams } from "react-router-dom";
+
+const tagColors = {
+  整體詞: "cyan",
+  反義詞: "cyan",
+  部分詞: "red",
+  上位詞: "green",
+  下位詞: "lime",
+  異體詞: "volcano",
+  近義詞: "orange",
+  類義詞: "gold",
+  同義詞: "geekblue",
+  異體詞: "purple",
+};
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -151,8 +164,27 @@ function Home({ pathname }) {
                           title={
                             <div className="sense-title">
                               {senseNode.definition}
-                              <Tooltip title={posNode.label}>
-                                <Tag color="magenta" style={{ float: "right" }}>
+                              {senseNode.children.map((typeNode) =>
+                                typeNode.children.map((glyphNode) => (
+                                  <Tooltip
+                                    title={typeNode.name}
+                                    color={tagColors[typeNode.name]}
+                                  >
+                                    <Tag
+                                      color={tagColors[typeNode.name]}
+                                      className="tag"
+                                    >
+                                      {glyphNode.ref}
+                                    </Tag>
+                                  </Tooltip>
+                                ))
+                              )}
+                              <Tooltip title={posNode.label} color="magenta">
+                                <Tag
+                                  icon={<TagsOutlined />}
+                                  color="magenta"
+                                  className="tag"
+                                >
                                   {posNode.name}
                                 </Tag>
                               </Tooltip>

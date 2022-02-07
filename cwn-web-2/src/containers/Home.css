@@ -94,3 +94,8 @@
   font-weight: 500;
   color: slateblue;
 }
+
+.tag {
+  float: right;
+  margin: 3px !important;
+}
