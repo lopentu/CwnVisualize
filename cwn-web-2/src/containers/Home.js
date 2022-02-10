@@ -9,8 +9,9 @@ import {
   Tag,
   Tooltip,
   List,
+  Button,
 } from "antd";
-import { TagOutlined, TagsOutlined } from "@ant-design/icons";
+import { TagOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import "./Home.css";
 import useData from "../hooks/useData";
@@ -235,8 +236,16 @@ function Home({ pathname }) {
             style={{ cursor: "pointer" }}
           />
         </Link>
-        {/* <div className="logo" /> */}
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}></Menu>
+        <div className="header-btns">
+          <Button
+            className="intro-btn"
+            icon={<QuestionCircleOutlined />}
+            type="ghost"
+            size="large"
+          >
+            使用說明
+          </Button>
+        </div>
       </Header>
       {beginningLayout()}
       {searchResultLayout()}
