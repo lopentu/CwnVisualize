@@ -16,7 +16,7 @@ import "./Home.css";
 import useData from "../hooks/useData";
 import useForceDirectedGraph from "../hooks/useForceDirectedGraph";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { tagColors } from "../ui/tagColors";
+import { colors } from "../ui/colors";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -155,7 +155,7 @@ function Home({ pathname }) {
                               <span>{senseNode.definition}</span>
                               <Tag
                                 // icon={<TagsOutlined />}
-                                color={tagColors.tag.POS}
+                                color={colors.tag.POS}
                                 className="tag"
                               >
                                 {`${posNode.name.split("]")[1]} ${
@@ -183,11 +183,11 @@ function Home({ pathname }) {
                                 typeNode.children.map((glyphNode, index) => (
                                   <Tooltip
                                     title={typeNode.name}
-                                    color={tagColors[typeNode.name][0]}
+                                    color={colors.tag[typeNode.name][0]}
                                     key={`${glyphNode.name}-${index}`}
                                   >
                                     <Tag
-                                      color={tagColors[typeNode.name][0]}
+                                      color={colors.tag[typeNode.name][0]}
                                       className="tag"
                                       onClick={() => {
                                         navigate(`/${glyphNode.ref}`);

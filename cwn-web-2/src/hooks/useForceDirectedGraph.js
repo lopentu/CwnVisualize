@@ -4,7 +4,7 @@ import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import { chunkString } from "../utils/utility";
 import { useNavigate } from "react-router-dom";
-import { tagColors, getNodeColors } from "../ui/tagColors";
+import { colors, getNodeColors } from "../ui/colors";
 
 const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
@@ -114,7 +114,7 @@ const useForceDirectedGraph = () => {
       );
 
       series.links.template.adapters.add("stroke", function (fill, target) {
-        return am5.color(tagColors.stroke);
+        return am5.color(colors.stroke);
       });
 
       seriesRef.current = series;
