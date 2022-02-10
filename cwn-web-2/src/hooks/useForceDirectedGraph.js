@@ -4,6 +4,7 @@ import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import { chunkString } from "../utils/utility";
 import { useNavigate } from "react-router-dom";
+import { tagColors, getNodeColors } from "../ui/tagColors";
 
 const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
@@ -36,16 +37,26 @@ const useForceDirectedGraph = () => {
           minRadius: 15,
           maxRadius: 60,
           nodePadding: 10,
+          strokeWidth: 5,
           xField: "x",
           yField: "y",
           centerStrength: 2,
-          manyBodyStrength: -30,
+          manyBodyStrength: -50,
           // initialFrames: 500,
           showOnFrame: 100,
           velocityDecay: 0.85,
           singleBranchOnly: true,
         })
       );
+
+      series.outerCircles.template.setAll({
+        strokeWidth: 1.5,
+      });
+
+      series.links.template.setAll({
+        strokeWidth: 3,
+        strokeOpacity: 0.35,
+      });
 
       series.nodes.template.adapters.add(
         "cursorOverStyle",
@@ -89,6 +100,21 @@ const useForceDirectedGraph = () => {
         if (linkedGlyph) {
           navigate(`/${linkedGlyph}`);
         }
+      });
+
+      series.circles.template.adapters.add("fill", function (fill, target) {
+        return getNodeColors(fill, target);
+      });
+
+      series.outerCircles.template.adapters.add(
+        "stroke",
+        function (fill, target) {
+          return getNodeColors(fill, target);
+        }
+      );
+
+      series.links.template.adapters.add("stroke", function (fill, target) {
+        return am5.color(tagColors.stroke);
       });
 
       seriesRef.current = series;

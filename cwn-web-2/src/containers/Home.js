@@ -16,19 +16,7 @@ import "./Home.css";
 import useData from "../hooks/useData";
 import useForceDirectedGraph from "../hooks/useForceDirectedGraph";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-const tagColors = {
-  整體詞: "cyan",
-  反義詞: "cyan",
-  部分詞: "red",
-  上位詞: "green",
-  下位詞: "lime",
-  異體詞: "volcano",
-  近義詞: "orange",
-  類義詞: "gold",
-  同義詞: "geekblue",
-  異體詞: "purple",
-};
+import { tagColors } from "../ui/tagColors";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -154,7 +142,7 @@ function Home({ pathname }) {
                   icon={<TagOutlined />}
                   title={
                     <div className="zhuyin-title">
-                      {zhuyinNode.lemma} （{zhuyinNode.name}）
+                      {zhuyinNode.lemma} （{zhuyinNode.name.split("]")[1]}）
                     </div>
                   }
                 >
@@ -167,10 +155,12 @@ function Home({ pathname }) {
                               <span>{senseNode.definition}</span>
                               <Tag
                                 // icon={<TagsOutlined />}
-                                color="magenta"
+                                color={tagColors.tag.POS}
                                 className="tag"
                               >
-                                {`${posNode.name} ${posNode.label}`}
+                                {`${posNode.name.split("]")[1]} ${
+                                  posNode.label
+                                }`}
                               </Tag>
                             </div>
                           }
@@ -193,11 +183,11 @@ function Home({ pathname }) {
                                 typeNode.children.map((glyphNode, index) => (
                                   <Tooltip
                                     title={typeNode.name}
-                                    color={tagColors[typeNode.name]}
+                                    color={tagColors[typeNode.name][0]}
                                     key={`${glyphNode.name}-${index}`}
                                   >
                                     <Tag
-                                      color={tagColors[typeNode.name]}
+                                      color={tagColors[typeNode.name][0]}
                                       className="tag"
                                       onClick={() => {
                                         navigate(`/${glyphNode.ref}`);

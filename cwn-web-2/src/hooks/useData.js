@@ -15,32 +15,41 @@ const useData = () => {
     }, {});
   };
 
-  const getRelationNodes = (relations) => {
+  const getRelationNodes = (relations, zhuyin_idx) => {
     return Object.keys(relations).map((type) => ({
+      node_type: "relation",
       name: relationLabels[type],
       value: 30,
       children: relations[type].map((node) => ({
-        name: `[fontSize: 30px]${node[0]}`,
-        value: 80,
+        node_type: "ref_glyph",
+        name: `[fontSize: 20px]${node[0]}`,
+        value: 50,
         children: [],
         cwn_id: node[1],
         ref: node[0],
+        relation_type: relationLabels[type],
+        zhuyin_idx,
       })),
       relation: type,
+      zhuyin_idx,
     }));
   };
 
-  const getPosNodes = (pos) => {
+  const getPosNodes = (pos, zhuyin_idx) => {
     return Object.keys(pos).map((type) => ({
-      name: type,
+      node_type: "POS",
+      name: `[bold]${type}`,
       value: 20,
       children: pos[type].map((node) => ({
         ...node,
+        node_type: "sense",
         name: "",
         value: 0,
-        children: getRelationNodes(node.relations),
+        children: getRelationNodes(node.relations, zhuyin_idx),
+        zhuyin_idx,
       })),
       label: posLabels[type],
+      zhuyin_idx,
     }));
   };
 
@@ -62,13 +71,16 @@ const useData = () => {
 
     return [
       {
+        node_type: "glyph",
         name: `[fontSize: 30px]${glyph}`,
         value: 100,
-        children: Object.keys(groupedNodes).map((zhuyin) => ({
-          name: zhuyin.split("　").join("\n"),
+        children: Object.keys(groupedNodes).map((zhuyin, i) => ({
+          node_type: "zhuyin",
+          name: `[bold]${zhuyin.split("　").join("\n")}`,
           value: 50,
-          children: getPosNodes(groupBy(groupedNodes[zhuyin], "pos")),
+          children: getPosNodes(groupBy(groupedNodes[zhuyin], "pos"), i),
           lemma: glyph,
+          idx: i,
         })),
         // x: am5.percent(50),
         // y: am5.percent(50),
