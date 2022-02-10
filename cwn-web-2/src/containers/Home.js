@@ -137,77 +137,80 @@ function Home({ pathname }) {
               className="result-menu"
             >
               {data?.[0]?.children?.map((zhuyinNode, i) => (
-                <SubMenu
-                  key={`zhuyin${i}`}
-                  icon={<TagOutlined />}
-                  title={
-                    <div className="zhuyin-title">
-                      {zhuyinNode.lemma} （{zhuyinNode.name.split("]")[1]}）
-                    </div>
-                  }
-                >
-                  {zhuyinNode.children?.map((posNode, j) =>
-                    posNode.children?.map((senseNode, k) => (
-                      <Fragment key={`sense${i}-${j}-${k}`}>
-                        <Menu.ItemGroup
-                          title={
-                            <div className="sense-title">
-                              <span>{senseNode.definition}</span>
-                              <Tag
-                                // icon={<TagsOutlined />}
-                                color={colors.tag.POS}
-                                className="tag"
+                <>
+                  <SubMenu
+                    key={`zhuyin${i}`}
+                    icon={<TagOutlined />}
+                    title={
+                      <div className="zhuyin-title">
+                        {zhuyinNode.lemma} （{zhuyinNode.name.split("]")[1]}）
+                      </div>
+                    }
+                  >
+                    {zhuyinNode.children?.map((posNode, j) =>
+                      posNode.children?.map((senseNode, k) => (
+                        <Fragment key={`sense${i}-${j}-${k}`}>
+                          <Menu.ItemGroup
+                            title={
+                              <div className="sense-title">
+                                <span>{senseNode.definition}</span>
+                                <Tag
+                                  // icon={<TagsOutlined />}
+                                  color={colors.tag.POS}
+                                  className="tag"
+                                >
+                                  {`${posNode.name.split("]")[1]} ${
+                                    posNode.label
+                                  }`}
+                                </Tag>
+                              </div>
+                            }
+                          >
+                            {senseNode.examples?.map((example, l) => (
+                              <Menu.Item
+                                className="list-item"
+                                key={`example${i}-${j}-${k}-${l}`}
                               >
-                                {`${posNode.name.split("]")[1]} ${
-                                  posNode.label
-                                }`}
-                              </Tag>
-                            </div>
-                          }
-                        >
-                          {senseNode.examples?.map((example, l) => (
-                            <Menu.Item
-                              className="list-item"
-                              key={`example${i}-${j}-${k}-${l}`}
-                            >
-                              {`${l + 1}. ` + example}
-                            </Menu.Item>
-                          ))}
-                          {senseNode.children.length > 0 && (
-                            <Menu.Item
-                              className="list-item related-words"
-                              key={`relatedWords${i}-${j}-${k}-`}
-                            >
-                              相關詞：
-                              {senseNode.children.map((typeNode) =>
-                                typeNode.children.map((glyphNode, index) => (
-                                  <Tooltip
-                                    title={typeNode.name}
-                                    color={colors.tag[typeNode.name][0]}
-                                    key={`${glyphNode.name}-${index}`}
-                                  >
-                                    <Tag
+                                {`${l + 1}. ` + example}
+                              </Menu.Item>
+                            ))}
+                            {senseNode.children.length > 0 && (
+                              <Menu.Item
+                                className="list-item related-words"
+                                key={`relatedWords${i}-${j}-${k}-`}
+                              >
+                                相關詞：
+                                {senseNode.children.map((typeNode) =>
+                                  typeNode.children.map((glyphNode, index) => (
+                                    <Tooltip
+                                      title={typeNode.name}
                                       color={colors.tag[typeNode.name][0]}
-                                      className="tag"
-                                      onClick={() => {
-                                        navigate(`/${glyphNode.ref}`);
-                                      }}
+                                      key={`${glyphNode.name}-${index}`}
                                     >
-                                      {glyphNode.ref}
-                                    </Tag>
-                                  </Tooltip>
-                                ))
-                              )}
-                            </Menu.Item>
-                          )}
-                        </Menu.ItemGroup>
-                        <Menu.Divider
-                          style={{ marginBottom: 0, marginTop: 10 }}
-                        />
-                      </Fragment>
-                    ))
-                  )}
-                </SubMenu>
+                                      <Tag
+                                        color={colors.tag[typeNode.name][0]}
+                                        className="tag"
+                                        onClick={() => {
+                                          navigate(`/${glyphNode.ref}`);
+                                        }}
+                                      >
+                                        {glyphNode.ref}
+                                      </Tag>
+                                    </Tooltip>
+                                  ))
+                                )}
+                              </Menu.Item>
+                            )}
+                          </Menu.ItemGroup>
+                          <Menu.Divider
+                            style={{ marginBottom: 0, marginTop: 10 }}
+                          />
+                        </Fragment>
+                      ))
+                    )}
+                  </SubMenu>
+                  <Divider style={{ margin: 0 }} />
+                </>
               ))}
             </Menu>
           </Sider>
