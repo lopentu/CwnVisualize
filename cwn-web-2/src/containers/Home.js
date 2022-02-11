@@ -176,34 +176,29 @@ function Home({ pathname }) {
                                 {`${l + 1}. ` + example}
                               </Menu.Item>
                             ))}
-                            {senseNode.children.length > 0 && (
-                              <Menu.Item
-                                className="list-item related-words"
-                                key={`relatedWords${i}-${j}-${k}-`}
-                              >
-                                相關詞：
-                                {senseNode.children.map((typeNode) =>
-                                  typeNode.children.map((glyphNode, index) => (
-                                    <Tooltip
-                                      title={typeNode.name}
+                            <Menu.Item
+                              className="list-item related-words"
+                              key={`relatedWords${i}-${j}-${k}-`}
+                            >
+                              {senseNode.children.map((typeNode) => (
+                                <>
+                                  {typeNode.name}：
+                                  {typeNode.children.map((glyphNode, index) => (
+                                    <Tag
                                       color={colors.tag[typeNode.name][0]}
-                                      key={`${glyphNode.name}-${index}`}
+                                      className="tag"
+                                      key={`${glyphNode.name}-tag-${index}`}
+                                      onClick={() => {
+                                        navigate(`/${glyphNode.ref}`);
+                                      }}
                                     >
-                                      <Tag
-                                        color={colors.tag[typeNode.name][0]}
-                                        className="tag"
-                                        key={`${glyphNode.name}-tag-${index}`}
-                                        onClick={() => {
-                                          navigate(`/${glyphNode.ref}`);
-                                        }}
-                                      >
-                                        {glyphNode.ref}
-                                      </Tag>
-                                    </Tooltip>
-                                  ))
-                                )}
-                              </Menu.Item>
-                            )}
+                                      {glyphNode.ref}
+                                    </Tag>
+                                  ))}
+                                  <br />
+                                </>
+                              ))}
+                            </Menu.Item>
                           </Menu.ItemGroup>
                           <Menu.Divider
                             dashed="True"
