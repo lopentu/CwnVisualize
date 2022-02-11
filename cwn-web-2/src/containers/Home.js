@@ -143,7 +143,7 @@ function Home({ pathname }) {
               className="result-menu"
             >
               {data?.[0]?.children?.map((zhuyinNode, i) => (
-                <>
+                <Fragment key={`zhuyin${i}`}>
                   <SubMenu
                     key={`zhuyin${i}`}
                     icon={<TagOutlined />}
@@ -192,6 +192,7 @@ function Home({ pathname }) {
                                       <Tag
                                         color={colors.tag[typeNode.name][0]}
                                         className="tag"
+                                        key={`${glyphNode.name}-tag-${index}`}
                                         onClick={() => {
                                           navigate(`/${glyphNode.ref}`);
                                         }}
@@ -205,14 +206,15 @@ function Home({ pathname }) {
                             )}
                           </Menu.ItemGroup>
                           <Menu.Divider
+                            dashed="True"
                             style={{ marginBottom: 0, marginTop: 10 }}
                           />
                         </Fragment>
                       ))
                     )}
                   </SubMenu>
-                  <Divider style={{ margin: 0 }} />
-                </>
+                  <Menu.Divider />
+                </Fragment>
               ))}
             </Menu>
           </Sider>

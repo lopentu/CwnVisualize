@@ -48,7 +48,10 @@ const useData = () => {
         children: getRelationNodes(node.relations, zhuyin_idx),
         zhuyin_idx,
       })),
-      label: posLabels[type],
+      label: type
+        .split(",")
+        .map((t) => posLabels[t])
+        .join(","),
       zhuyin_idx,
     }));
   };

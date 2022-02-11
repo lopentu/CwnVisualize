@@ -70,27 +70,48 @@ const useForceDirectedGraph = () => {
 
       series.nodes.template.adapters.add("tooltipText", (text = "", target) => {
         if (target.dataItem) {
-          if (target.dataItem.dataContext?.definition) {
-            let examplesText = target.dataItem.dataContext.examples;
-            if (examplesText) {
-              examplesText = examplesText
-                .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
-                .join("\r\n");
-            }
-            return (
-              chunkString(
-                `定義：${target.dataItem.dataContext.definition}`,
-                16
-              ) + (examplesText ? `\n例句：\n${examplesText}` : "")
-            );
-          } else if (target.dataItem.dataContext.label) {
-            return target.dataItem.dataContext.label;
-          } else if (target.dataItem.dataContext.relation) {
-            return target.dataItem.dataContext.relation;
-          } else {
-            return "";
+          const node = target.dataItem.dataContext;
+          switch (node.node_type) {
+            case "POS":
+              return node.label;
+            case "sense":
+              let examplesText = node.examples;
+              if (examplesText) {
+                examplesText = examplesText
+                  .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+                  .join("\r\n");
+              }
+              return (
+                chunkString(`定義：${node.definition}`, 16) +
+                (examplesText ? `\n例句：\n${examplesText}` : "")
+              );
+            case "relation":
+              return node.relation;
+            default:
+              return "";
           }
         }
+        //   if (node.definition) {
+        //     let examplesText = node.examples;
+        //     if (examplesText) {
+        //       examplesText = examplesText
+        //         .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+        //         .join("\r\n");
+        //     }
+        //     return (
+        //       chunkString(
+        //         `定義：${node.definition}`,
+        //         16
+        //       ) + (examplesText ? `\n例句：\n${examplesText}` : "")
+        //     );
+        //   } else if (target.dataItem.dataContext.label) {
+        //     return target.dataItem.dataContext.label;
+        //   } else if (target.dataItem.dataContext.relation) {
+        //     return target.dataItem.dataContext.relation;
+        //   } else {
+        //     return "";
+        //   }
+        // }
         return text;
       });
 
