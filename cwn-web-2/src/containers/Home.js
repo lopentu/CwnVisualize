@@ -8,7 +8,6 @@ import {
   Divider,
   Tag,
   Tooltip,
-  List,
   Button,
 } from "antd";
 import { TagOutlined, QuestionCircleOutlined } from "@ant-design/icons";
@@ -53,7 +52,13 @@ function Home({ pathname }) {
           if (result) {
             setData(result);
           } else {
-            navigate("/");
+            // navigate("/");
+            message.error({
+              content: "無該字詞",
+              style: {
+                marginTop: !glyph ? "75vh" : "15vh",
+              },
+            });
           }
         }, 100);
       }, 400);
@@ -155,11 +160,7 @@ function Home({ pathname }) {
                             title={
                               <div className="sense-title">
                                 <span>{senseNode.definition}</span>
-                                <Tag
-                                  // icon={<TagsOutlined />}
-                                  color={colors.tag.POS}
-                                  className="tag"
-                                >
+                                <Tag color={colors.tag.POS} className="tag">
                                   {`${posNode.name.split("]")[1]} ${
                                     posNode.label
                                   }`}
