@@ -49,15 +49,41 @@ const useForceDirectedGraph = () => {
         })
       );
 
+      // Circles
+      series.circles.template.adapters.add("fill", function (fill, target) {
+        return getNodeColors(fill, target);
+      });
+
+      // Outer Circles
       series.outerCircles.template.setAll({
         strokeWidth: 1.5,
       });
 
+      series.outerCircles.template.adapters.add(
+        "stroke",
+        function (fill, target) {
+          return getNodeColors(fill, target);
+        }
+      );
+      series.circles.template.states.create("highlight", {
+        // stroke: am5.color("#FF871F"),
+        fill: am5.color("#FF871F"),
+      });
+      series.outerCircles.template.states.create("highlight", {
+        strokeWidth: 7,
+      });
+
+      // Links
       series.links.template.setAll({
         strokeWidth: 3,
         strokeOpacity: 0.35,
       });
 
+      series.links.template.adapters.add("stroke", function (fill, target) {
+        return am5.color(colors.stroke);
+      });
+
+      // Nodes
       series.nodes.template.adapters.add(
         "cursorOverStyle",
         (cursorOverStyle, target) => {
@@ -91,51 +117,30 @@ const useForceDirectedGraph = () => {
               return "";
           }
         }
-        //   if (node.definition) {
-        //     let examplesText = node.examples;
-        //     if (examplesText) {
-        //       examplesText = examplesText
-        //         .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
-        //         .join("\r\n");
-        //     }
-        //     return (
-        //       chunkString(
-        //         `定義：${node.definition}`,
-        //         16
-        //       ) + (examplesText ? `\n例句：\n${examplesText}` : "")
-        //     );
-        //   } else if (target.dataItem.dataContext.label) {
-        //     return target.dataItem.dataContext.label;
-        //   } else if (target.dataItem.dataContext.relation) {
-        //     return target.dataItem.dataContext.relation;
-        //   } else {
-        //     return "";
-        //   }
-        // }
         return text;
       });
 
       series.nodes.template.events.on("click", (e) => {
-        // console.log("~~~", e.target.dataItem.dataContext);
+        console.log("~~~", e.target);
+        e.target.states.apply("highlight");
         const linkedGlyph = e.target.dataItem.dataContext.ref;
         if (linkedGlyph) {
           navigate(`/${linkedGlyph}`);
         }
       });
 
-      series.circles.template.adapters.add("fill", function (fill, target) {
-        return getNodeColors(fill, target);
+      series.circles.template.events.on("click", (e) => {
+        console.log("WWWW", e.target);
+        e.target.states.apply("highlight");
+        // const linkedGlyph = e.target.dataItem.dataContext.ref;
+        // if (linkedGlyph) {
+        //   navigate(`/${linkedGlyph}`);
+        // }
       });
 
-      series.outerCircles.template.adapters.add(
-        "stroke",
-        function (fill, target) {
-          return getNodeColors(fill, target);
-        }
-      );
-
-      series.links.template.adapters.add("stroke", function (fill, target) {
-        return am5.color(colors.stroke);
+      series.nodes.template.states.create("highlight", {
+        stroke: am5.color("#FF871F"),
+        fill: am5.color("#FF871F"),
       });
 
       seriesRef.current = series;
