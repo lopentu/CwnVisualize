@@ -20,12 +20,12 @@ const useData = () => {
       node_type: "relation",
       name: relationLabels[type],
       value: 30,
-      children: relations[type].map((node) => ({
+      children: relations[type].map((node, i) => ({
         node_type: "ref_glyph",
         name: `[fontSize: 20px]${node[0]}`,
         value: 50,
         children: [],
-        cwn_id: node[1],
+        cwn_id: `${node[1]} ${i}`,
         ref: node[0],
         relation_type: relationLabels[type],
         zhuyin_idx,

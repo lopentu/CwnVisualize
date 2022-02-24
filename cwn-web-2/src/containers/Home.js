@@ -26,7 +26,7 @@ function Home({ pathname }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [queryContent, setQueryContent] = useState("");
-  const [updateGraph] = useForceDirectedGraph();
+  const [updateGraph, trigger] = useForceDirectedGraph();
   const query = useData();
   const { glyph } = useParams();
   const navigate = useNavigate();
@@ -245,6 +245,7 @@ function Home({ pathname }) {
             icon={<QuestionCircleOutlined />}
             type="ghost"
             size="large"
+            onClick={trigger}
           >
             使用說明
           </Button>

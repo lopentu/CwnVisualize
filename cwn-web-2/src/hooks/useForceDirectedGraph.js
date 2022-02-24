@@ -33,6 +33,7 @@ const useForceDirectedGraph = () => {
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
+          idField: "name",
 
           minRadius: 15,
           maxRadius: 60,
@@ -51,6 +52,10 @@ const useForceDirectedGraph = () => {
 
       // Circles
       series.circles.template.adapters.add("fill", function (fill, target) {
+        console.log("!!!", target.parent.allChildren());
+        if (target.dataItem.dataContext["highlight"]) {
+          return "#FF871F";
+        }
         return getNodeColors(fill, target);
       });
 
@@ -62,6 +67,9 @@ const useForceDirectedGraph = () => {
       series.outerCircles.template.adapters.add(
         "stroke",
         function (fill, target) {
+          if (target.dataItem.dataContext["highlight"]) {
+            return "#FF871F";
+          }
           return getNodeColors(fill, target);
         }
       );
@@ -80,6 +88,9 @@ const useForceDirectedGraph = () => {
       });
 
       series.links.template.adapters.add("stroke", function (fill, target) {
+        if (target.get("target").dataContext["highlight"]) {
+          return "#FF871F";
+        }
         return am5.color(colors.stroke);
       });
 
@@ -113,6 +124,8 @@ const useForceDirectedGraph = () => {
               );
             case "relation":
               return node.relation;
+            case "ref_glyph":
+              return target.dataItem.get("id");
             default:
               return "";
           }
@@ -132,15 +145,11 @@ const useForceDirectedGraph = () => {
       series.circles.template.events.on("click", (e) => {
         console.log("WWWW", e.target);
         e.target.states.apply("highlight");
+        e.target.dataItem.dataContext["highlight"] = true;
         // const linkedGlyph = e.target.dataItem.dataContext.ref;
         // if (linkedGlyph) {
         //   navigate(`/${linkedGlyph}`);
         // }
-      });
-
-      series.nodes.template.states.create("highlight", {
-        stroke: am5.color("#FF871F"),
-        fill: am5.color("#FF871F"),
       });
 
       seriesRef.current = series;
@@ -172,7 +181,12 @@ const useForceDirectedGraph = () => {
     }
   };
 
-  return [updateGraph];
+  const trigger = () => {
+    let dataItem = seriesRef.current?.nodes.template.getDataItemById("好不");
+    console.log("!!!", seriesRef.current, dataItem);
+  };
+
+  return [updateGraph, trigger];
 };
 
 export default useForceDirectedGraph;
