@@ -27,9 +27,10 @@ function Home({ pathname }) {
   const [loading, setLoading] = useState(false);
   const [queryContent, setQueryContent] = useState("");
   const [updateGraph] = useForceDirectedGraph();
-  const query = useData();
+  const [query, highlight] = useData();
   const { glyph } = useParams();
   const navigate = useNavigate();
+  const [lastClicked, setLastClicked] = useState("");
 
   const onQueryChange = (e) => {
     setQueryContent(e.target.value);
@@ -91,6 +92,13 @@ function Home({ pathname }) {
     }, 400);
   };
 
+  const onClickSenseOrRefGlyph = (e) => {
+    if (lastClicked) {
+      highlight(lastClicked, false);
+    }
+    setLastClicked(e.target.getAttribute("data-id"));
+    setData(highlight(e.target.getAttribute("data-id")));
+  };
   useEffect(() => {
     console.log("data:", data);
     updateGraph(data);
@@ -143,9 +151,9 @@ function Home({ pathname }) {
               className="result-menu"
             >
               {data?.[0]?.children?.map((zhuyinNode, i) => (
-                <Fragment key={`zhuyin${i}`}>
+                <Fragment key={zhuyinNode.id}>
                   <SubMenu
-                    key={`zhuyin${i}`}
+                    key={zhuyinNode.id}
                     icon={<TagOutlined />}
                     title={
                       <div className="zhuyin-title">
@@ -155,11 +163,16 @@ function Home({ pathname }) {
                   >
                     {zhuyinNode.children?.map((posNode, j) =>
                       posNode.children?.map((senseNode, k) => (
-                        <Fragment key={`sense${i}-${j}-${k}`}>
+                        <Fragment key={senseNode.id}>
                           <Menu.ItemGroup
                             title={
                               <div className="sense-title">
-                                <span>{senseNode.definition}</span>
+                                <span
+                                  onClick={onClickSenseOrRefGlyph}
+                                  data-id={senseNode.id}
+                                >
+                                  {senseNode.definition}
+                                </span>
                                 <Tag color={colors.tag.POS} className="tag">
                                   {`${posNode.name.split("]")[1]} ${
                                     posNode.label
@@ -171,14 +184,14 @@ function Home({ pathname }) {
                             {senseNode.examples?.map((example, l) => (
                               <Menu.Item
                                 className="list-item"
-                                key={`example${i}-${j}-${k}-${l}`}
+                                key={senseNode.id + `-example-${l}`}
                               >
                                 {`${l + 1}. ` + example}
                               </Menu.Item>
                             ))}
                             <Menu.Item
                               className="list-item related-words"
-                              key={`relatedWords${i}-${j}-${k}-`}
+                              key={`relatedWords${i}-${j}-${k}`}
                             >
                               {senseNode.children.map((typeNode) => (
                                 <>
@@ -188,9 +201,8 @@ function Home({ pathname }) {
                                       color={colors.tag[typeNode.name][0]}
                                       className="tag"
                                       key={`${glyphNode.name}-tag-${index}`}
-                                      onClick={() => {
-                                        navigate(`/${glyphNode.ref}`);
-                                      }}
+                                      onClick={onClickSenseOrRefGlyph}
+                                      data-id={glyphNode.id}
                                     >
                                       {glyphNode.ref}
                                     </Tag>

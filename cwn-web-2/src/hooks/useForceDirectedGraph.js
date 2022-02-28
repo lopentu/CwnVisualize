@@ -27,13 +27,13 @@ const useForceDirectedGraph = () => {
 
       const series = container.children.push(
         am5hierarchy.ForceDirected.new(graphRef.current, {
-          downDepth: 1,
+          downDepth: Infinity,
           initialDepth: 1,
           topDepth: 0,
           valueField: "value",
           categoryField: "name",
           childDataField: "children",
-
+          idField: "id",
           minRadius: 15,
           maxRadius: 60,
           nodePadding: 10,
@@ -91,27 +91,6 @@ const useForceDirectedGraph = () => {
               return "";
           }
         }
-        //   if (node.definition) {
-        //     let examplesText = node.examples;
-        //     if (examplesText) {
-        //       examplesText = examplesText
-        //         .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
-        //         .join("\r\n");
-        //     }
-        //     return (
-        //       chunkString(
-        //         `定義：${node.definition}`,
-        //         16
-        //       ) + (examplesText ? `\n例句：\n${examplesText}` : "")
-        //     );
-        //   } else if (target.dataItem.dataContext.label) {
-        //     return target.dataItem.dataContext.label;
-        //   } else if (target.dataItem.dataContext.relation) {
-        //     return target.dataItem.dataContext.relation;
-        //   } else {
-        //     return "";
-        //   }
-        // }
         return text;
       });
 
@@ -124,17 +103,26 @@ const useForceDirectedGraph = () => {
       });
 
       series.circles.template.adapters.add("fill", function (fill, target) {
+        if (target.dataItem.dataContext["highlight"]) {
+          return am5.color(colors.highlight);
+        }
         return getNodeColors(fill, target);
       });
 
       series.outerCircles.template.adapters.add(
         "stroke",
         function (fill, target) {
+          if (target.dataItem.dataContext["highlight"]) {
+            return am5.color(colors.highlight);
+          }
           return getNodeColors(fill, target);
         }
       );
 
       series.links.template.adapters.add("stroke", function (fill, target) {
+        if (target.get("target").dataContext["highlight"]) {
+          return am5.color(colors.highlight);
+        }
         return am5.color(colors.stroke);
       });
 
