@@ -114,9 +114,13 @@ function Home({ pathname }) {
       );
     if (senseID !== lastClickedSense) {
       setLastClickedSense(senseID);
+      highlight(lastClickedSense, false);
     }
-    if (id === lastClickedRefGlyph) {
-      return;
+    if (lastClickedRefGlyph) {
+      if (id === lastClickedRefGlyph) {
+        return;
+      }
+      highlight(lastClickedRefGlyph, false);
     }
     setLastClickedRefGlyph(id);
     setData(highlight(id));
