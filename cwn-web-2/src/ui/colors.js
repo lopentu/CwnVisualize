@@ -3,10 +3,10 @@ import * as am5 from "@amcharts/amcharts5";
 const colors = {
   node: {
     glyph: ["#492FB1"],
-    zhuyin: ["#739ED3", "#5F817D", "#6B67A2"],
+    zhuyin: ["#739ED3", "#5F817D", "#6B67A2", "#64B9B9"],
     POS: ["#ff85c0"],
     sense: ["#81A2EF"],
-    relation: ["#6F94EC", "#7BB7A0", "#8A7DB5"],
+    relation: ["#6F94EC", "#7BB7A0", "#8A7DB5", "#469B9B"],
   },
   stroke: "#706D8B",
   tag: {
