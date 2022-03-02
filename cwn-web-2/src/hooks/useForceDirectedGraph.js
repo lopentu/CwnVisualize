@@ -27,8 +27,8 @@ const useForceDirectedGraph = () => {
 
       const series = container.children.push(
         am5hierarchy.ForceDirected.new(graphRef.current, {
-          downDepth: Infinity,
-          initialDepth: 1,
+          downDepth: 1,
+          initialDepth: 2,
           topDepth: 0,
           valueField: "value",
           categoryField: "name",
@@ -103,7 +103,10 @@ const useForceDirectedGraph = () => {
       });
 
       series.circles.template.adapters.add("fill", function (fill, target) {
-        if (target.dataItem.dataContext["highlight"]) {
+        if (
+          target.dataItem.dataContext["end_node"] &&
+          target.dataItem.dataContext["highlight"]
+        ) {
           return am5.color(colors.highlight);
         }
         return getNodeColors(fill, target);
@@ -119,6 +122,16 @@ const useForceDirectedGraph = () => {
         }
       );
 
+      series.outerCircles.template.adapters.add(
+        "strokeWidth",
+        function (width, target) {
+          if (target.dataItem.dataContext["highlight"]) {
+            return 3;
+          }
+          return width;
+        }
+      );
+
       series.links.template.adapters.add("stroke", function (fill, target) {
         if (target.get("target").dataContext["highlight"]) {
           return am5.color(colors.highlight);
@@ -126,6 +139,7 @@ const useForceDirectedGraph = () => {
         return am5.color(colors.stroke);
       });
 
+      console.log(series.nodes.values);
       seriesRef.current = series;
 
       // const legend = container.children.push(

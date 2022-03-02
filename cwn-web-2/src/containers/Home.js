@@ -30,7 +30,8 @@ function Home({ pathname }) {
   const [query, highlight] = useData();
   const { glyph } = useParams();
   const navigate = useNavigate();
-  const [lastClicked, setLastClicked] = useState("");
+  const [lastClickedSense, setLastClickedSense] = useState("");
+  const [lastClickedRefGlyph, setLastClickedRefGlyph] = useState("");
 
   const onQueryChange = (e) => {
     setQueryContent(e.target.value);
@@ -92,13 +93,35 @@ function Home({ pathname }) {
     }, 400);
   };
 
-  const onClickSenseOrRefGlyph = (e) => {
-    if (lastClicked) {
-      highlight(lastClicked, false);
+  const onClickSense = (e) => {
+    const id = e.target.getAttribute("data-id");
+    if (lastClickedSense) {
+      if (id === lastClickedSense) {
+        return;
+      }
+      setLastClickedRefGlyph("");
+      highlight(lastClickedSense, false);
     }
-    setLastClicked(e.target.getAttribute("data-id"));
-    setData(highlight(e.target.getAttribute("data-id")));
+    setLastClickedSense(id);
+    setData(highlight(id));
   };
+
+  const onClickRefGlyph = (e) => {
+    const id = e.target.getAttribute("data-id");
+    const senseID =
+      e.target.parentNode.parentNode.parentNode.parentNode.childNodes?.[0].childNodes?.[0].childNodes?.[0].getAttribute(
+        "data-id"
+      );
+    if (senseID !== lastClickedSense) {
+      setLastClickedSense(senseID);
+    }
+    if (id === lastClickedRefGlyph) {
+      return;
+    }
+    setLastClickedRefGlyph(id);
+    setData(highlight(id));
+  };
+
   useEffect(() => {
     console.log("data:", data);
     updateGraph(data);
@@ -154,6 +177,7 @@ function Home({ pathname }) {
                 <Fragment key={zhuyinNode.id}>
                   <SubMenu
                     key={zhuyinNode.id}
+                    selectable={true}
                     icon={<TagOutlined />}
                     title={
                       <div className="zhuyin-title">
@@ -165,10 +189,16 @@ function Home({ pathname }) {
                       posNode.children?.map((senseNode, k) => (
                         <Fragment key={senseNode.id}>
                           <Menu.ItemGroup
+                            className={
+                              lastClickedSense === senseNode.id
+                                ? "selected"
+                                : ""
+                            }
                             title={
-                              <div className="sense-title">
+                              <div className={"sense-title"}>
                                 <span
-                                  onClick={onClickSenseOrRefGlyph}
+                                  className="sense-span"
+                                  onClick={onClickSense}
                                   data-id={senseNode.id}
                                 >
                                   {senseNode.definition}
@@ -199,9 +229,14 @@ function Home({ pathname }) {
                                   {typeNode.children.map((glyphNode, index) => (
                                     <Tag
                                       color={colors.tag[typeNode.name][0]}
-                                      className="tag"
+                                      className={
+                                        "tag" +
+                                        (lastClickedRefGlyph === glyphNode.id
+                                          ? " selected"
+                                          : "")
+                                      }
                                       key={`${glyphNode.name}-tag-${index}`}
-                                      onClick={onClickSenseOrRefGlyph}
+                                      onClick={onClickRefGlyph}
                                       data-id={glyphNode.id}
                                     >
                                       {glyphNode.ref}
@@ -213,8 +248,10 @@ function Home({ pathname }) {
                             </Menu.Item>
                           </Menu.ItemGroup>
                           <Menu.Divider
-                            dashed="True"
-                            style={{ marginBottom: 0, marginTop: 10 }}
+                            dashed={true}
+                            style={{
+                              width: "auto",
+                            }}
                           />
                         </Fragment>
                       ))

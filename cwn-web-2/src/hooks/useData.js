@@ -144,10 +144,14 @@ const useData = () => {
 
   const highlightNodesAndPath = (id, highlight = true) => {
     let node = nodesMap.get(id);
+    node.end_node = highlight;
     while (node) {
       node.highlight = highlight;
       console.log("~", node);
       node = nodesMap.get(node.parent);
+      if (node) {
+        node.end_node = false;
+      }
     }
     return [nodesMap.get("glyph")];
   };

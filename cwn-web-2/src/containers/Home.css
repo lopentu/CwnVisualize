@@ -72,11 +72,15 @@
   height: 100%;
 }
 
+.ant-menu-submenu-title {
+  margin: 2px !important;
+}
+
 .list-item {
   white-space: normal !important;
   height: auto !important;
   line-height: 1.8 !important;
-  padding: 0px 20px 0px 40px !important;
+  padding: 0px 20px 4px 40px !important;
   color: black !important;
   cursor: auto !important;
   background-color: transparent !important;
@@ -123,9 +127,23 @@
   margin-top: 5px;
 }
 
+.sense-span {
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #bbdef0;
+}
+
 .tag {
   /* float: right; */
   margin: 3px !important;
+}
+
+.tag.selected {
+  border-color: #f3d42e;
+  border-width: 1px;
+  box-shadow: 0 0 5px #f3d42e;
 }
 
 .related-words .tag {
