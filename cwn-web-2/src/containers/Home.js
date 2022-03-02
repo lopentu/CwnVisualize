@@ -181,7 +181,6 @@ function Home({ pathname }) {
                 <Fragment key={zhuyinNode.id}>
                   <SubMenu
                     key={zhuyinNode.id}
-                    selectable={true}
                     icon={<TagOutlined />}
                     title={
                       <div className="zhuyin-title">
