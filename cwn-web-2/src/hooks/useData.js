@@ -147,7 +147,6 @@ const useData = () => {
     node.end_node = highlight;
     while (node) {
       node.highlight = highlight;
-      console.log("~", node);
       node = nodesMap.get(node.parent);
       if (node) {
         node.end_node = false;

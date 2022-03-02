@@ -10,7 +10,6 @@ const useForceDirectedGraph = () => {
   const graphRef = useRef(null);
   const seriesRef = useRef();
   const navigate = useNavigate();
-  // const legendRef = useRef();
 
   useEffect(() => {
     if (!graphRef.current) {
@@ -95,7 +94,6 @@ const useForceDirectedGraph = () => {
       });
 
       series.nodes.template.events.on("click", (e) => {
-        // console.log("~~~", e.target.dataItem.dataContext);
         const linkedGlyph = e.target.dataItem.dataContext.ref;
         if (linkedGlyph) {
           navigate(`/${linkedGlyph}`);
@@ -151,15 +149,6 @@ const useForceDirectedGraph = () => {
 
       console.log(series.nodes.values);
       seriesRef.current = series;
-
-      // const legend = container.children.push(
-      //   am5.Legend.new(graphRef.current, {
-      //     centerX: am5.percent(50),
-      //     x: am5.percent(50),
-      //     layout: graphRef.current.horizontalLayout,
-      //   })
-      // );
-      // legendRef.current = legend;
     }
 
     return () => {
@@ -172,10 +161,6 @@ const useForceDirectedGraph = () => {
   const updateGraph = (data) => {
     if (graphRef.current && data.length > 0) {
       seriesRef.current?.data?.setAll(data);
-      // series.set("selectedDataItem", series.dataItems[0]);
-      // legendRef.current?.data?.setAll(
-      //   seriesRef.current?.dataItems?.[0]?.get("children") ?? []
-      // );
     }
   };
 

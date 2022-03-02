@@ -134,7 +134,6 @@ function Home({ pathname }) {
   };
 
   useEffect(() => {
-    console.log("data:", data);
     updateGraph(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
