@@ -58,6 +58,8 @@ function Home({ pathname }) {
         setTimeout(() => {
           if (result) {
             setData(result);
+            setLastClickedSense("");
+            setLastClickedRefGlyph("");
           } else {
             // navigate("/");
             message.error({
@@ -86,6 +88,8 @@ function Home({ pathname }) {
         if (result) {
           setData(result);
           navigate("/" + queryContent);
+          setLastClickedSense("");
+          setLastClickedRefGlyph("");
         } else {
           message.error({
             content: "無該字詞",
