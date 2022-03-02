@@ -78,11 +78,11 @@ const useForceDirectedGraph = () => {
               let examplesText = node.examples;
               if (examplesText) {
                 examplesText = examplesText
-                  .map((v, i) => `${i + 1}. ${chunkString(v, 16)}`)
+                  .map((v, i) => `${i + 1}. ${chunkString(v, 30)}`)
                   .join("\r\n");
               }
               return (
-                chunkString(`定義：${node.definition}`, 16) +
+                chunkString(`定義：${node.definition}`, 30) +
                 (examplesText ? `\n例句：\n${examplesText}` : "")
               );
             case "relation":

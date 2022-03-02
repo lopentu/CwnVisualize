@@ -32,10 +32,15 @@ function Home({ pathname }) {
   const navigate = useNavigate();
   const [lastClickedSense, setLastClickedSense] = useState("");
   const [lastClickedRefGlyph, setLastClickedRefGlyph] = useState("");
+  const [openKeys, setOpenKeys] = useState([]);
 
   const onQueryChange = (e) => {
     setQueryContent(e.target.value);
   };
+
+  useEffect(() => {
+    setOpenKeys([]);
+  }, [glyph]);
 
   useEffect(() => {
     if (!glyph) {
@@ -176,8 +181,10 @@ function Home({ pathname }) {
               mode="inline"
               selectable={false}
               // defaultSelectedKeys={["1"]}
-              // defaultOpenKeys={["sub1"]}
+              defaultOpenKeys={[]}
+              openKeys={openKeys}
               className="result-menu"
+              onOpenChange={(openKeys) => setOpenKeys(openKeys)}
             >
               {data?.[0]?.children?.map((zhuyinNode, i) => (
                 <Fragment key={zhuyinNode.id}>
@@ -228,9 +235,11 @@ function Home({ pathname }) {
                               className="list-item related-words"
                               key={`relatedWords${i}-${j}-${k}`}
                             >
-                              {senseNode.children.map((typeNode) => (
-                                <>
-                                  {typeNode.name}：
+                              {senseNode.children.map((typeNode, i) => (
+                                <Fragment key={i}>
+                                  <span className="typeNode-name">
+                                    {typeNode.name}：
+                                  </span>
                                   {typeNode.children.map((glyphNode, index) => (
                                     <Tag
                                       color={colors.tag[typeNode.name][0]}
@@ -248,16 +257,13 @@ function Home({ pathname }) {
                                     </Tag>
                                   ))}
                                   <br />
-                                </>
+                                </Fragment>
                               ))}
                             </Menu.Item>
                           </Menu.ItemGroup>
-                          <Menu.Divider
-                            dashed={true}
-                            style={{
-                              width: "auto",
-                            }}
-                          />
+                          {j < zhuyinNode.children?.length - 1 && (
+                            <Menu.Divider dashed={true} />
+                          )}
                         </Fragment>
                       ))
                     )}

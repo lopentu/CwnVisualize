@@ -88,7 +88,7 @@
 }
 
 .related-words {
-  margin-top: 10px;
+  margin-bottom: 0px !important;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -173,4 +173,11 @@
 
 .intro-btn:hover {
   background-color: #1890ffa0 !important;
+}
+
+.ant-menu-item-divider.ant-menu-item-divider-dashed {
+  width: "auto";
+  border-top: 1px rgba(0, 0, 0, 0.2);
+  border-style: dashed;
+  margin: 0px !important;
 }
