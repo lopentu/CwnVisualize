@@ -113,8 +113,10 @@ function Home({ pathname }) {
         "data-id"
       );
     if (senseID !== lastClickedSense) {
+      if (lastClickedSense) {
+        highlight(lastClickedSense, false);
+      }
       setLastClickedSense(senseID);
-      highlight(lastClickedSense, false);
     }
     if (lastClickedRefGlyph) {
       if (id === lastClickedRefGlyph) {
