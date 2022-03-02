@@ -22,7 +22,7 @@ const colors = {
     同義詞: ["blue", "#69c0ff"],
     // 異體詞: ["purple", "#b37feb"], // varword
   },
-  highlight: "#F9E062",
+  highlight: "#FFBF00",
 };
 
 const getNodeColors = (fill, target) => {

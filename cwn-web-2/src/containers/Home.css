@@ -141,9 +141,9 @@
 }
 
 .tag.selected {
-  border-color: #f3d42e;
+  border-color: #ffbf00;
   border-width: 1px;
-  box-shadow: 0 0 5px #f3d42e;
+  box-shadow: 0 0 7px #ffbf00;
 }
 
 .related-words .tag {

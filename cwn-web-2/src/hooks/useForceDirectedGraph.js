@@ -139,6 +139,16 @@ const useForceDirectedGraph = () => {
         return am5.color(colors.stroke);
       });
 
+      series.links.template.adapters.add(
+        "strokeWidth",
+        function (width, target) {
+          if (target.get("target").dataContext["highlight"]) {
+            return 6;
+          }
+          return width;
+        }
+      );
+
       console.log(series.nodes.values);
       seriesRef.current = series;
 
