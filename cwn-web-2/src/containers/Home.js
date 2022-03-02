@@ -294,14 +294,14 @@ function Home({ pathname }) {
           />
         </Link>
         <div className="header-btns">
-          <Button
+          {/* <Button
             className="intro-btn"
             icon={<QuestionCircleOutlined />}
             type="ghost"
             size="large"
           >
             使用說明
-          </Button>
+          </Button> */}
         </div>
       </Header>
       {beginningLayout()}
