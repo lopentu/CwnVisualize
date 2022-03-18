@@ -1,7 +1,7 @@
 {
-  "name": "cwn-web-2",
+  "name": "cwn-visualize",
   "version": "0.1.0",
-  "homepage": "https://momo1106github.github.io/CwnWeb2",
+  "homepage": "https://lopentu.github.io/CwnVisualization",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts5": "^5.1.0",
