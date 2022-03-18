@@ -150,7 +150,7 @@ function Home({ pathname }) {
       >
         <img
           className="logo-home"
-          src="/CwnWeb2/cwn-logo-main-home.svg"
+          src="/CwnVisualize/cwn-logo-main-home.svg"
           alt="中文詞彙網路 CWN"
         />
         <Search
@@ -292,7 +292,7 @@ function Home({ pathname }) {
         <Link to="/">
           <img
             className="logo"
-            src="/CwnWeb2/cwn-logo-main.svg"
+            src="/CwnVisualize/cwn-logo-main.svg"
             alt="中文詞彙網路 CWN"
             style={{ cursor: "pointer" }}
           />
