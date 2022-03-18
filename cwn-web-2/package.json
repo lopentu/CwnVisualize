@@ -1,7 +1,7 @@
 {
   "name": "cwn-visualize",
   "version": "0.1.0",
-  "homepage": "https://lopentu.github.io/CwnVisualization",
+  "homepage": "https://lopentu.github.io/CwnVisualize",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts5": "^5.1.0",
